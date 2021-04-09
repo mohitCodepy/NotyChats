@@ -1,0 +1,32 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.nav-div{
+    position: relative;
+    height: 30vh;
+}
+.nav-inner-div{
+    top:20px;
+    position: absolute;
+}
+.main-div{
+    top:100px;
+    left: 150px;
+    height: 85vh;
+    width: 80%;
+    z-index: 99;
+    background-color: white;
+    position: absolute;
+}
+.main-inner-div{
+    height: 100%;
+}
+input{
+    outline: none;
+    border: none;
+}
+input:focus{
+    outline: none;
+}

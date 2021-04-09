@@ -1,0 +1,10 @@
+import http.client
+
+conn = http.client.HTTPSConnection("api.msg91.com")
+
+conn.request("POST", "/api/v5/otp/verify?authkey=&mobile=")
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
