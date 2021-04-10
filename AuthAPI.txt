@@ -8,3 +8,19 @@ res = conn.getresponse()
 data = res.read()
 
 print(data.decode("utf-8"))
+
+
+def send_otp(mobile, otp):
+    conn = http.client.HTTPSConnection("api.msg91.com")
+    authkey = settings.AUTH_KEY 
+    headers = { 'content-type': "application/json" }
+    space=" "
+    url = f'http://control.msg91.com/api/sendotp.php?otp={otp}&message=Please_verify_your_otp_{otp}&mobile={mobile}&authkey={authkey}&country=91'
+    conn.request("GET", url , headers=headers)
+    res = conn.getresponse()
+    data = res.read()
+    print(data)
+    return None
+
+    import http.client
+AUTH_KEY = '295182AgvnI4kIyy5d85c2f8'

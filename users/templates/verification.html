@@ -34,10 +34,22 @@
     <div class="container main-inner-div align-items-center justify-content-center d-flex my-auto">
       <div class="row mb-5 mt-5">
         <div class="col-sm-12 mb-5 text-center">
-          <!-- <h1 class="text-center mb-5 font-weight-bolder p-2" >Enter Valid Phone Number Here </h1> -->
-          <input style="width: 50px; height: 60px; outline: none; font-size: xx-large; border-bottom: 2px solid black;" class="font-weight-bold  w-100 text-center" type="tel" placeholder="Verify your number">
-          <input style="width: 50px; height: 60px; outline: none; font-size: xx-large; border-bottom: 2px solid black;" class="font-weight-bold  w-100 text-center" type="text" placeholder="Set password">
-          <input class="btn btn-success mt-5 " type="button" value="Send OTP">
+          <form method="POST" id="form1" action="{% url 'verify_phone' %}">
+            {% csrf_token %}
+            <!-- <h1 class="text-center mb-5 font-weight-bolder p-2">Enter Valid Phone Number Here </h1> -->
+            <input id="input1"
+              style="width: 50px; height: 60px; outline: none; font-size: xx-large; border-bottom: 2px solid black;"
+              class="font-weight-bold  w-100 text-center" type="tel" name="phone" placeholder="Verify your number">
+            <input id="in_otp" class="btn btn-success mt-5 " type="submit" value="Send OTP">
+          </form>
+          <form method="POST" id="form2" action="{% url 'verify_otp' %}" style="display: none;">
+            {% csrf_token %}
+
+            <input id="inputotp"
+              style="width: 50px; height: 60px; outline: none; font-size: xx-large; border-bottom: 2px solid black;"
+              class="font-weight-bold  w-100 text-center" type="number" name="otp" placeholder="Verify your OTP">
+            <input id="veriotp" class="btn btn-success mt-5" type="submit" value="Verify OTP">
+          </form>
         </div>
         <div class="col-sm-12 mb-5 text-center">
           <p>Didn't get OTP ? <span class="text-primary">Resend</span></p>
@@ -58,6 +70,14 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js" integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" crossorigin="anonymous"></script>
     -->
+  <script>
+    console.log('hello');
+    document.getElementById('in_otp').onclick = function(event){
+      event.preventDefault();
+      document.getElementById('form2').style.display = "block";
+      document.getElementById('form1').style.display = "none";
+    }
+  </script>
 </body>
 
 </html>
