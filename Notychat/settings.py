@@ -136,4 +136,4 @@ AUTH_USER_MODEL = 'users.User'
 STATIC_URL = '/static/'
 # STATIC_ROOT = os.path.join(BASE_DIR / 'static')
 
-AUTH_KEY = '295182AgvnI4kIyy5d85c2f8'
+AUTH_KEY = "Your msg91 key here"
