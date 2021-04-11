@@ -5,5 +5,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 class HomeView(LoginRequiredMixin,View):
     def get(self, request, *args, **kwargs):
-        return render(request, template_name = 'notychats.html')
+        if request.user.is_authenticated:
+            return render(request, template_name = 'notychats.html')
+        return render(request, 'verification.html')
+
     

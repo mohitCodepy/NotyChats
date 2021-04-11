@@ -1,0 +1,21 @@
+{% extends 'base.html'%}
+
+{% block verify_otp %}
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-info" role="alert">
+  {{message}}
+</div>
+{% endfor %}
+{% endif %}
+<form method="POST" id="form2" action="{% url 'verify_otp' %}">
+    {% csrf_token %}
+    <input id="inputotp"
+        style="width: 50px; height: 60px; outline: none; font-size: xx-large; border-bottom: 2px solid black;"
+        class="font-weight-bold  w-100 text-center" type="number" name="otp" placeholder="Verify your OTP" step="0.01">
+    <input id="veriotp" class="btn btn-success mt-5" type="submit" value="Verify OTP">
+</form>
+<div class="col-sm-12 mb-5 mt-5 text-center">
+    <p>Didn't get OTP ? <a href="{% url 'resend_otp' %}" class="text-center text-decoration-none">Resend</a></p>
+</div>
+{% endblock verify_otp %}

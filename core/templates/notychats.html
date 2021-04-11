@@ -50,7 +50,11 @@
             </div>
             <div class="col-sm-7 mt-1">
               <div class="row">
-                <span class="ml-2  text-left font-weight-bold">Rahul Kumar</span>
+                <span class="ml-2  text-left font-weight-bold">Rahul Kumar {{request.user.phone}} </span>
+                <form method="POST" action ="{% url 'userlogout' %}">
+                  {% csrf_token %}
+                  <button>Logout</button>
+                </form>
                 <span class="ml-2 text-success font-weight-bold">● Online</span>
               </div>
             </div>
