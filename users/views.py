@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse
 from django.views.generic import View
 import random
 from .models import User
@@ -21,46 +22,60 @@ def send_otp(mobile, otp):
 
     
 class Verification_View(View):
+
     template_name = 'verification.html'
+
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect('/home')
         return render(request, template_name = self.template_name)
+
+
     def post(self, request, *args, **kwargs):
-        phone  = request.POST.get('phone','')
-        print(phone)
-        if phone!='':
-            try:
-                if User.objects.filter(phone = int(phone), is_active = False).exists():
+        if request.is_ajax():
+            phone  = request.POST.get('phone','')
+            print(phone)
+            if phone!='':
+                print('i am inside condition')
+                try:
+                    if User.objects.filter(phone = int(phone), is_active = False).exists():
+                        request.session['phone'] = phone
+                        # messages.success(request, 'Please regenerate your OTP ! Click on resend')
+                        return JsonResponse({"status":"400", 'msg':'Please regenerate your OTP ! Click on resend'})
+                    if User.objects.filter(phone = int(phone)).exists():
+                        print('i am inside user filter 2')
+                        request.session['phone'] = phone
+                        # messages.success(request, 'Number already registered  ')
+                        # return redirect('/auth/verify_otp/')
+                        return JsonResponse({"status":"200", 'msg': 'Number already registered'})
+                    print('i am outside filter 2')
+                    otp_gen =  random.randint(100000,999999)
                     request.session['phone'] = phone
-                    messages.success(request, 'Please regenerate your OTP ! Click on resend')
-                    return render(request, 'verify_otp.html')
-                if User.objects.filter(phone = int(phone)).exists():
-                    request.session['phone'] = phone
-                    messages.success(request, 'Number already registered  ')
-                    return redirect('/auth/verify_otp/')
-                otp_gen =  random.randint(100000,999999)
-                request.session['phone'] = phone
-                request.session['otp_gen'] = otp_gen
-                print(phone, otp_gen)
-                user_obj = User.objects.create_user(phone = int(phone), full_name = "unknown",password = str(otp_gen), is_active = False)
-                if user_obj != None:
-                    user_obj.save()
-                    send_otp(phone, otp_gen)
-                    messages.success(request, f'Enter the OTP sent to {phone}')
-                    return render(request, 'verify_otp.html')
-            except:
-                messages.warning(request, 'Phone number must contains digits')
-                return render(request, 'verification.html')
-        messages.warning(request, 'Oops! enter the phone number')
-        return render(request, 'verification.html')
+                    request.session['otp_gen'] = otp_gen
+                    print(phone, otp_gen)
+                    user_obj = User.objects.create_user(phone = int(phone), full_name = "unknown",password = str(otp_gen), is_active = False)
+                    if user_obj != None:
+                        user_obj.save()
+                        send_otp(phone, otp_gen)
+                        # messages.success(request, f'Enter the OTP sent to {phone}')
+                        return JsonResponse({"status":"200", 'msg':'Registered Successfully'})
+
+                except:
+                    # messages.warning(request, 'Phone number must contains digits')
+                    return JsonResponse({"status":"400", 'msg':'Phone number must contains digits'})
+
+            # messages.warning(request, 'Oops! enter the phone number')
+            return JsonResponse({"status":"400", 'msg':'Oops! enter the phone number'})
 
 class LoginView(View):
+
     template_name = 'verify_otp.html'
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect('/')
         return render(request, template_name = self.template_name)
+
+
     def post(self, request, *args, **kwargs):
         phone = request.session.get('phone')
         user_otp = request.POST.get('otp')
@@ -84,8 +99,11 @@ class LoginView(View):
                 login(request, user_obj)
                 return redirect('/home')
             messages.warning(request, 'Wrong OTP')
+
             return redirect('/auth/verify_otp/')
+
         else:
+
             return redirect('/auth/verify_phone')
 
 class Resend_otp(View):

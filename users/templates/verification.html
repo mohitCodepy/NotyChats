@@ -1,19 +1,27 @@
 {% extends 'base.html'%}
 {% block verify_phone %}
-{% if messages %}
-{% for message in messages %}
-<div class="alert alert-warning" role="alert">
-  {{message}}
-</div>
-{% endfor %}
-{% endif %}
 
-<form method="POST" id="form1">
+<div id="error_msg" class="alert alert-warning" role="alert"></div>
+
+<form method="POST" id="myform">
   {% csrf_token %}
   <!-- <h1 class="text-center mb-5 font-weight-bolder p-2">Enter Valid Phone Number Here </h1> -->
-  <input id="input1"
+  <input id="input_phone"
     style="width: 50px; height: 60px; outline: none; font-size: xx-large; border-bottom: 2px solid black;"
     class="font-weight-bold  w-100 text-center" type="tel" name="phone" placeholder="Verify your number">
-  <input id="in_otp" class="btn btn-success mt-5 " type="submit" value="Send OTP">
+  <input id="reg_phone" class="btn btn-success mt-5 " type="submit" value="Send OTP">
 </form>
+
+<div id="hidden_div" style="display: none;">
+<form method="POST" id="form2">
+    {% csrf_token %}
+    <input id="inputotp"
+        style="width: 50px; height: 60px; outline: none; font-size: xx-large; border-bottom: 2px solid black;"
+        class="font-weight-bold  w-100 text-center" type="number" name="otp" placeholder="Verify your OTP" step="0.01">
+    <input id="veriotp" class="btn btn-success mt-5" type="submit" value="Verify OTP">
+</form>
+<div class="col-sm-12 mb-5 mt-5 text-center">
+    <p>Didn't get OTP ? <a href="{% url 'resend_otp' %}" class="text-center text-decoration-none">Resend</a></p>
+</div>
+</div>
 {% endblock verify_phone%}

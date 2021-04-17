@@ -8,7 +8,7 @@
 </div>
 {% endfor %}
 {% endif %}
-<form method="POST" id="form2" action="{% url 'verify_otp' %}">
+<form method="POST" id="form2">
     {% csrf_token %}
     <input id="inputotp"
         style="width: 50px; height: 60px; outline: none; font-size: xx-large; border-bottom: 2px solid black;"

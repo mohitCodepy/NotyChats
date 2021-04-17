@@ -103,6 +103,40 @@
 });
 </script> -->
 
+<script>
+$('#myform').on('submit',function(e){
+    e.preventDefault();
+    $.ajax({
+        type : "POST",
+        url : "{% url 'verify_phone' %}",
+        data:{
+        phone:$('#input_phone').val(),
+        csrfmiddlewaretoken: '{{csrf_token}}',
+        dataType: "json"
+        },
+        success:function(data, status){
+            console.log(status)
+            console.log(data.msg);
+            console.log(data.status);
+            console.log(typeof(data.status));
+            var output = data.msg;
+            // var status = data.status;
+            if (data.status != "200"){
+                $('#error_msg').html(output);
+            }
+            else{
+                console.log('this 200');
+                $('#myform').hide();
+                $('#hidden_div').removeAttr("style");
+            }
+
+        }
+    });
+
+});
+</script>
+
+
 </body>
 
 </html>
