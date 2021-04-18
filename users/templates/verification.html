@@ -1,8 +1,8 @@
 {% extends 'base.html'%}
 {% block verify_phone %}
 
-<div id="error_msg" class="alert alert-warning" role="alert"></div>
-
+<div id="error_msg" class="alert alert-info" role="alert">Welcome to Notychats</div>
+  
 <form method="POST" id="myform">
   {% csrf_token %}
   <!-- <h1 class="text-center mb-5 font-weight-bolder p-2">Enter Valid Phone Number Here </h1> -->
@@ -21,7 +21,7 @@
     <input id="veriotp" class="btn btn-success mt-5" type="submit" value="Verify OTP">
 </form>
 <div class="col-sm-12 mb-5 mt-5 text-center">
-    <p>Didn't get OTP ? <a href="{% url 'resend_otp' %}" class="text-center text-decoration-none">Resend</a></p>
+    <p >Didn't get OTP ? <a id="resend_otp" href="{% url 'resend_otp' %}" class="text-center text-decoration-none">Resend</a><p id="resend_time" class="text-primary"></p></p>
 </div>
 </div>
 {% endblock verify_phone%}

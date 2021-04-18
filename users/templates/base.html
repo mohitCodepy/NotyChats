@@ -38,8 +38,6 @@
                 <div class="col-sm-12 mb-5 text-center">
                     {% block verify_phone %}
                     {% endblock verify_phone%}
-                    {% block verify_otp %}
-                    {% endblock verify_otp %}
                 </div>
             </div>
         </div>
@@ -120,12 +118,17 @@ $('#myform').on('submit',function(e){
             console.log(data.status);
             console.log(typeof(data.status));
             var output = data.msg;
+            console.log(output);
             // var status = data.status;
             if (data.status != "200"){
-                $('#error_msg').html(output);
+                $('#error_msg').text(output);
+                $('#error_msg').addClass('alert-danger');
             }
             else{
                 console.log('this 200');
+                $('#error_msg').removeClass('alert-danger');
+                $('#error_msg').addClass('alert-info');
+                $('#error_msg').text(output);
                 $('#myform').hide();
                 $('#hidden_div').removeAttr("style");
             }
@@ -134,8 +137,73 @@ $('#myform').on('submit',function(e){
     });
 
 });
-</script>
 
+$('#resend_otp').on('click', function(e){
+    e.preventDefault();
+    $.ajax({
+        type : 'GET',
+        url : "{% url 'resend_otp' %}",
+        success:function(data){
+            console.log('hello',data.msg)
+            if (data.msg){
+                $('#error_msg').text(data.msg);
+                $('#error_msg').addClass('text-success');
+                $("#resend_otp").hide();
+                $(function(){
+                    let start = 59;
+                    let end = 0;
+                    let speed = 1000;
+                    setInterval(function(){
+                        if (end<start){
+                            start--;
+                        }
+                        if (start<10)
+                        {
+                            $('#resend_time').html("0:0"+start);
+
+                        }
+                        else{
+                            $('#resend_time').html("0:"+start);
+                        }
+                        if (start ==0){
+                            $("#resend_otp").show();
+                            $('#resend_time').hide();
+                        }
+                    }, speed);
+                });
+            }
+            else{
+                $('#resend_msg').hide();
+                
+            }
+        }
+    });
+});
+</script>
+<script>
+    $('#form2').on('submit', function(e){
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url : "{% url 'verify_otp' %}",
+            data:{
+                otp: $('#inputotp').val(),
+                csrfmiddlewaretoken : "{{csrf_token}}",
+                dataType : "json"
+            },
+            success:function(data){
+                if(data.status != "200"){
+                    $('#error_msg').text(data.msg);
+                    $('#error_msg').removeClass('alert-info');
+                    $('#error_msg').addClass('alert-danger');;
+            }
+            else{
+                window.location = '/home';
+            }
+            }
+        })
+    });
+</script>
 
 </body>
 
