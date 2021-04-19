@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import  AbstractUser
 from .managers import CustomUserManager
+
 class User(AbstractUser):
     picture = models.ImageField(upload_to = 'media', blank = True, null = True)
     phone = models.IntegerField(unique=True, blank= False )

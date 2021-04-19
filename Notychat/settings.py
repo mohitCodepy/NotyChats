@@ -53,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+MIDDLEWARE += ('crum.CurrentRequestUserMiddleware',)
 
 ROOT_URLCONF = 'Notychat.urls'
 
@@ -136,4 +137,4 @@ AUTH_USER_MODEL = 'users.User'
 STATIC_URL = '/static/'
 # STATIC_ROOT = os.path.join(BASE_DIR / 'static')
 
-AUTH_KEY = 'your msg91 key here'
+AUTH_KEY = 'Your msg91 key here'
