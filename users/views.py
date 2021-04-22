@@ -159,3 +159,6 @@ class LogoutView(View):
     def post(self, request, *args, **kwargs):
         logout(request)
         return redirect('/auth/verify_phone/')
+ 
+def frontpage(request):
+    return render(request, 'search.html')

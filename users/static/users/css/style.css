@@ -38,3 +38,15 @@ input{
 input:focus{
     outline: none;
 }
+
+.side_scroller{
+    width: 30%;
+    height: 85vh;
+    background-color: white;
+    overflow: scroll;
+}
+.chat-area{
+    width: 70%;
+    height: 85vh;
+    overflow: scroll;   
+}
