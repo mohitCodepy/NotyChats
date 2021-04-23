@@ -41,12 +41,28 @@ input:focus{
 
 .side_scroller{
     width: 30%;
-    height: 85vh;
+    height: 77vh;
     background-color: white;
     overflow: scroll;
 }
 .chat-area{
     width: 70%;
-    height: 85vh;
+    height: 77vh;
     overflow: scroll;   
+}
+::-webkit-scrollbar {
+    width: 0px;
+  }
+
+
+.left-bar{
+    width: 30%;
+    background-color: rgba(240, 240, 240, 0.973);
+    height: 8vh;
+}
+
+.right-bar{
+    width: 70%;
+    background-color: rgba(240, 240, 240, 0.973);
+    height: 8vh;
 }
