@@ -74,7 +74,7 @@ TEMPLATES = [
 ]
 
 # WSGI_APPLICATION = 'Notychat.wsgi.application'
-ASGI_APPLICATION = 'Notychat.routing.application'
+ASGI_APPLICATION = 'Notychat.routings.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases

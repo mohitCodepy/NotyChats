@@ -211,6 +211,23 @@ $('#resend_otp').on('click', function(e){
     });
 </script>
 
+<script>
+    const socket = new WebSocket('ws://127.0.0.1:8000/home/');
+    socket.onopen = function(e){
+        console.log('connected');
+        socket.send(JSON.stringify({'msg': 'hello backend'}));
+    };
+    
+    socket.onmessage = function(e){
+        msg = JSON.parse(e.data);
+        console.log('message is ', msg.reply);
+
+        // console.log('db data', msg.db );
+        sent = msg.db;
+    }
+  
+</script>
+
 </body>
 
 </html>

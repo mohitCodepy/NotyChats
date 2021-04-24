@@ -46,9 +46,20 @@ input:focus{
     overflow: scroll;
 }
 .chat-area{
+    margin-left:10px ;
     width: 70%;
-    height: 77vh;
-    overflow: scroll;   
+    height: 77vh;   
+    background-color: rgba(216, 205, 205, 0.795);
+
+}
+
+.chat-box{
+    margin-left : 12px;
+    max-height: 70.5vh;
+    min-height: 70.5vh;
+    width: 97%;  
+    overflow: scroll;
+    background-color:  rgba(216, 205, 205, 0.795);
 }
 ::-webkit-scrollbar {
     width: 0px;
@@ -65,4 +76,64 @@ input:focus{
     width: 70%;
     background-color: rgba(240, 240, 240, 0.973);
     height: 8vh;
+}
+
+/* to change the color of placeholder */
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: rgb(202, 199, 199);
+    opacity: 1; /* Firefox */
+  }
+  
+  :-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: rgb(202, 199, 199);
+  }
+  
+  ::-ms-input-placeholder { /* Microsoft Edge */
+    color: rgb(202, 199, 199);
+  }
+
+  /* end */
+
+.send-msg{
+    float: right;
+    background-color: transparent;
+    height: auto;
+
+}
+.send-msg > .msg-box-inner{
+    max-width: 300px;
+    min-width: 200px;
+    height: auto;
+    border-radius: 3%;
+    background-color: #DCF8C6;
+}
+.recieved-msg {
+    float: left;
+    background-color: transparent;
+    height: auto;
+}
+
+.recieved-msg > .msg-box-inner{
+    max-width: 300px;
+    min-width: 200px;
+    height: auto;
+    border-radius: 3%;
+    background-color: rgb(252, 250, 250);
+}
+
+.send-input-box{
+    width: 97%;
+    height: 50px;
+    margin-left: 13px;
+    padding-left: 0px;
+    padding-right: 0px;
+    background-color: rgba(216, 205, 205, 0.795);
+}
+.main-input-box{
+    width: 93%;
+
+}
+.main-input-box:focus{
+    outline: none;
 }
