@@ -35,16 +35,32 @@ input{
     outline: none;
     border: none;
 }
+
 input:focus{
     outline: none;
 }
 
 .side_scroller{
-    width: 30%;
-    height: 77vh;
-    background-color: white;
+    height: 72vh;
+    padding-right: -3px;
+    padding-left:  -3px ;
+    /* background-color: white; */
+    border: none; 
     overflow: scroll;
 }
+
+.user-card{
+    border-radius: 1px ;
+}
+
+.side_bar{
+    width: 30%;
+    height: 70vh;
+    padding-right:10px;
+    padding-bottom: 0;
+    background-color: white;
+}
+
 .chat-area{
     margin-left:10px ;
     width: 70%;
@@ -61,6 +77,7 @@ input:focus{
     overflow: scroll;
     background-color:  rgba(216, 205, 205, 0.795);
 }
+
 ::-webkit-scrollbar {
     width: 0px;
   }
@@ -101,6 +118,7 @@ input:focus{
     height: auto;
 
 }
+
 .send-msg > .msg-box-inner{
     max-width: 300px;
     min-width: 200px;
@@ -124,16 +142,27 @@ input:focus{
 
 .send-input-box{
     width: 97%;
-    height: 50px;
+    height: 49px;
     margin-left: 13px;
     padding-left: 0px;
     padding-right: 0px;
+    margin-bottom: 0px;
     background-color: rgba(216, 205, 205, 0.795);
 }
+
 .main-input-box{
-    width: 93%;
+    margin-top: 0.5px;
+    width: 90%;
+    height: 48.5px;
 
 }
+
 .main-input-box:focus{
     outline: none;
+    border: none;
+}
+.user-img{
+    border-radius: 50%;
+    width: 55px;
+    height: 55px;
 }
