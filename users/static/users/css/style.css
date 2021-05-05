@@ -166,3 +166,21 @@ input:focus{
     width: 55px;
     height: 55px;
 }
+
+.three-dot{
+    color: transparent;
+    width: 6px;
+}
+.three-dot:hover{
+    color: transparent;
+}
+
+.dropdown-menu-right {
+    right: 32px!important;
+    left: auto!important;
+}
+/* .dropdown-menu .show{
+    margin-left: 150px;
+    background-color: turquoise;
+
+} */

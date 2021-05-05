@@ -13,9 +13,15 @@ class HomeView(View):
     def get(self, request, *args, **kwargs):
         # if request.user.is_authenticated:
         # user_obj = User.objects.all()
-        return render(request, template_name = 'Notychat.html')
+        print(dir(request))
+        print(kwargs, args, request.get_host())
+        return render(request, template_name = 'Notychat.html', context= {'path' : request.get_full_path()})
         # return render(request, 'verification.html')
-    
+
+class AddFriend(View):
+    def get(self, request, *args, **kwargs):
+
+        return render(request, template_name = 'Addfriend.html')
 
 
     

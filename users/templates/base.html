@@ -43,6 +43,9 @@
                 <div class="col-sm-12 mb-5 text-center">
                     {% block verify_phone %}
                     {% endblock verify_phone%}
+
+                    {% block addfriend %}
+                    {% endblock addfriend %}
                 </div>
             </div>
         </div>
@@ -56,10 +59,10 @@
         crossorigin="anonymous"></script>
 
     <!-- Option 2: Separate Popper and Bootstrap JS -->
-    <!--
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js" integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" crossorigin="anonymous"></script>
-    -->
+    
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js" integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" crossorigin="anonymous"></script> -->
+   
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
         integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
         crossorigin="anonymous"></script>
@@ -213,11 +216,11 @@ $('#resend_otp').on('click', function(e){
 
 <script>
 
-   
-    const socket = new WebSocket('ws://127.0.0.1:8000/home/');
+    const socket = new WebSocket('ws://'+window.location.host+'{{path}}');
     socket.onopen = function(e){
         console.log('connected');
     };
+    
 
     document.getElementById('send-msg').onkeyup = function(e){
         e.preventDefault();
@@ -260,7 +263,6 @@ $('#resend_otp').on('click', function(e){
         chat_msgs = rec_msg.message;
         if (chat_msgs!= undefined){
         sender_chat_msg += sender_chats_fun(chat_msgs);
-
     }
     document.getElementById('sender-chats').innerHTML += sender_chat_msg ;
         
@@ -278,8 +280,7 @@ $('#resend_otp').on('click', function(e){
     function sender_chats_fun(msg){
 
         let sender_chat_msg = '<div class="col-sm-12 mt-2 bg-none "><div class="card send-msg border-0 rounded text-right"><div class="card-body py-0 msg-box-inner pr-1"><p class="card-text text-left pr-2 pt-1 mb-0">'+msg+'</p>'
-+'<a class="text-secondary text-decoration-none pt-0" style="font-size: small;">14:56 PM</a> </div></div></div>'
-    
+            +'<a class="text-secondary text-decoration-none pt-0" style="font-size: small;">14:56 PM</a> </div></div></div>'
     return sender_chat_msg
     };
 </script>

@@ -36,3 +36,23 @@ class ConnectingPeople(models.Model):
         if not user.pk:
             self.connection_sender = user
         super(ConnectingPeople, self).save(*args, **kwargs)
+
+
+MSG_STATUS = (
+
+    ('Sent', 'Sent'),
+    ('Pending', 'Pending'),
+    ('Read', 'Read'),
+
+)
+
+
+class Message(models.Model):
+    group_id = models.ForeignKey(ConnectingPeople, related_name='user_messages', on_delete = models.CASCADE)
+    message = models.CharField(max_length = 500)
+    msg_date = models.DateTimeField(auto_now_add = True) 
+    multimedia = models.FileField(blank = True)
+    msg_status = models.CharField(max_length = 10, choices = MSG_STATUS)
+    
+    def __str__(self):
+        return self.message

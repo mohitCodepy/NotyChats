@@ -8,7 +8,8 @@ from django.core import serializers
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        # group_name = 
+        # user_group_name = self.scope
+
         print(self, self.scope)
         print('connected successfully')
         await self.accept()

@@ -14,16 +14,40 @@
                     src="{% static 'users/images/wlogo.png' %}" alt="hello" height="45px" width="45px">
             </div>
             <div class="col-md-9 text-right justify-content-end align-items-center d-flex mx-0">
-                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-chat-left-fill mx-3" fill="currentColor"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd"
-                        d="M2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
-                </svg>
-                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-three-dots-vertical mr-2"
-                    fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd"
-                        d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
-                </svg>
+                <a class="text-decoration-none" href="#"><svg width="1em" height="1em" viewBox="0 0 16 16"
+                        class="text-dark bi bi-chat-left-fill mx-3" fill="currentColor"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+                    </svg></a>
+                <div class="dropdown" style="z-index: 999999;">
+                    <a class="dropdown-toggle three-dot" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+
+                        <svg width="1em" height="1em" viewBox="0 0 16 16"
+                            class="text-dark bi bi-three-dots-vertical mr-2" fill="currentColor"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                        </svg>
+                    </a>
+                    <ul class="dropdown-menu dropdown-lists dropdown-menu-right" style="position: absolute; left: -100px; inset: 0px auto auto 0px; transform: translate3d(0px, 24.5px, 0px);" aria-labelledby="dropdownMenuLink">
+                        <li><a class="dropdown-item" href="{% url 'addfriend' %}">New group</a></li>
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="#">Archived</a></li>
+                        <li><a class="dropdown-item" href="#">Starred</a></li>
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><a class="dropdown-item" href="#">Log out</a></li>
+                    </ul>
+                </div>
+
+                <!-- <a class="text-decoration-none d-inline-block" href="#"><svg width="1em" height="1em"
+                        viewBox="0 0 16 16" class="text-dark bi bi-three-dots-vertical mr-2" fill="currentColor"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                    </svg></a> -->
+
             </div>
         </div>
     </div>
@@ -49,7 +73,7 @@
         <div class="row">
             <div class="col-sm-12 mb-1">
                 <div class="card mb-0 mx-0 border-0 sticky-top  my-2 px-0">
-                    <div class="row g-0 mx-2 bg-white border">
+                    <div class="row g-0 mx-2 bg-white border" style="z-index: -1;">
                         <div class="col-md-2 mb-1 py-1 text-left">
                             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor"
                                 class="d-inline bi bi-search ml-4 " style="color: rgb(151, 146, 146);"
@@ -58,7 +82,7 @@
                                     d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
                             </svg>
                         </div>
-                        <div class="col-md-10 py-1 d-flex align-items-center bg-white">
+                        <div class="col-md-10 py-1 d-flex align-items-center bg-white" ">
                             <input width="100" style="font-size: normal;"
                                 class="bg-white  text-left  d-inline  input-group " type="text"
                                 placeholder="Search or start new chat ">
@@ -75,7 +99,7 @@
         <div class="row">
             <div class="chat-box px-4 col-md-12">
                 <div class="row" id="sender-chats">
-                    
+
                 </div>
             </div>
             <div class="col-md-12 pb-0 input-group flex-nowrap send-input-box">
@@ -88,4 +112,5 @@
         </div>
     </div>
 </div>
+
 {% endblock home %}
