@@ -34,12 +34,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
         print(datas['msg'])
         user_obj =  await sync_to_async(User.objects.all)()
         user_obj = await sync_to_async(serializers.serialize)('json', user_obj)
+        user_detail_obj = await sync_to_async(User.objects.get)(id = 1)
+        user_detail_obj = await sync_to_async(serializers.serialize)('json',[user_detail_obj])
         await self.channel_layer.group_send(
             'mohit',
             {   
                 'type' :  'chat_message',            
                 'message': datas['msg'],
                 'msg':    user_obj,
+                'user_data': user_detail_obj
             }
         )
 
@@ -47,12 +50,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.close()
 
     async def chat_message(self, event):
-        message = event['message']
-        userss = event['msg']
-        print(message)
+        message = event.get('message')
+        userss = event.get('msg')
+        userdetail = event.get('user_data')
+        print(userdetail, 'hthththththhhhhh')
+        print(message, 'htiththth')
         await self.send(text_data=json.dumps({
             'message': message,
-            'msg': json.dumps({'db' : userss})
+            'msg': json.dumps({'db' : userss}),
+            'single_data': json.dumps({'single':userdetail})
         }))
         
     async def chat_users(self, event):
@@ -61,3 +67,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'msg': json.dumps({'db' : message})
         }))
+
+    # async def user_detail(self, event):
+        
+    #     await self.send(text_data = json.dumps({'user_detail' : json.dumps(event['message'])}))
+
+        
+
+

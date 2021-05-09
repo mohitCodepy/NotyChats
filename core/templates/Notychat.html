@@ -21,8 +21,8 @@
                             d="M2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
                     </svg></a>
                 <div class="dropdown" style="z-index: 999999;">
-                    <a class="dropdown-toggle three-dot" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
-                        aria-expanded="false">
+                    <a class="dropdown-toggle three-dot" href="#" role="button" id="dropdownMenuLink"
+                        data-bs-toggle="dropdown" aria-expanded="false">
 
                         <svg width="1em" height="1em" viewBox="0 0 16 16"
                             class="text-dark bi bi-three-dots-vertical mr-2" fill="currentColor"
@@ -31,7 +31,9 @@
                                 d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
                         </svg>
                     </a>
-                    <ul class="dropdown-menu dropdown-lists dropdown-menu-right" style="position: absolute; left: -100px; inset: 0px auto auto 0px; transform: translate3d(0px, 24.5px, 0px);" aria-labelledby="dropdownMenuLink">
+                    <ul class="dropdown-menu dropdown-lists dropdown-menu-right"
+                        style="position: absolute; left: -100px; inset: 0px auto auto 0px; transform: translate3d(0px, 24.5px, 0px);"
+                        aria-labelledby="dropdownMenuLink">
                         <li><a class="dropdown-item" href="{% url 'addfriend' %}">New group</a></li>
                         <li><a class="dropdown-item" href="#">Profile</a></li>
                         <li><a class="dropdown-item" href="#">Archived</a></li>
@@ -53,11 +55,19 @@
     </div>
     <div class="col-sm-8 right-bar border">
         <div class="row g-0">
-            <div class="col-md-3 align-items-center justify-content-center mx-0">
-                <img class="img-fluid rounded-circle border border-3 p-1 border-warning mt-1"
-                    src="{% static 'users/images/wlogo.png' %}" alt="hello" height="45px" width="45px">
+            <div class="col-md-5 align-items-center justify-content-center mx-0">
+                <div class="row">
+                    <div class="col-sm-5 text-center">
+                        <img id="second-user-img" class="d-inline user-img img-fluid " src="" alt="hello" 
+                            width="45px">
+                    </div>
+                    <div class="col-sm-7 text-left mt-1 mb-0">
+                        <p id="second-user-name" class="mb-0" style="font-size: large;"></p>
+                        <p class=" text-success">◉ Online</span></p>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-9 text-right justify-content-end align-items-center d-flex mx-0">
+            <div class="col-md-7 text-right justify-content-end align-items-center d-flex mx-0 mb-3">
                 <i class="fa fa-paperclip text-dark mr-4" aria-hidden="true"></i>
                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-three-dots-vertical mr-2"
                     fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -83,9 +93,9 @@
                             </svg>
                         </div>
                         <div class="col-md-10 py-1 d-flex align-items-center bg-white" ">
-                            <input width="100" style="font-size: normal;"
-                                class="bg-white  text-left  d-inline  input-group " type="text"
-                                placeholder="Search or start new chat ">
+                            <input width=" 100" style="font-size: normal;"
+                            class="bg-white  text-left  d-inline  input-group " type="text"
+                            placeholder="Search or start new chat ">
                         </div>
                     </div>
                 </div>

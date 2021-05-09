@@ -234,7 +234,23 @@ $('#resend_otp').on('click', function(e){
     }
 
     socket.onmessage = function(e){
+
+        console.log(e.data);
         rec_msg = JSON.parse(e.data);
+        if(rec_msg.single_data!=undefined){
+        single_user_data = JSON.parse(rec_msg.single_data);
+        single_user_data = single_user_data['single'];
+        console.log(single_user_data, 'fasjfdsdfasdfjaosdjf;jasdjfoisd');
+        single_user_data = JSON.parse(single_user_data);
+        console.log(single_user_data[0]['pk']);
+        console.log(single_user_data[0]['fields']['picture']);
+        document.getElementById('second-user-img').src = '/media/'+single_user_data[0]['fields']['picture'];
+        document.getElementById('second-user-name').innerHTML = single_user_data[0]['fields']['full_name'];
+
+        
+    }
+        console.log(rec_msg,'this is user detail');
+
         // console.log(rec_msg.message);
         // console.log(rec_msg.msg);
         reply1 = rec_msg.msg;
