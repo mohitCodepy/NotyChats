@@ -229,7 +229,7 @@ $('#resend_otp').on('click', function(e){
             console.log(msg);
             document.getElementById('send-msg').value = '';
             socket.send(JSON.stringify({'msg': msg}));
-
+            
             }
     }
 
@@ -245,9 +245,7 @@ $('#resend_otp').on('click', function(e){
         console.log(single_user_data[0]['pk']);
         console.log(single_user_data[0]['fields']['picture']);
         document.getElementById('second-user-img').src = '/media/'+single_user_data[0]['fields']['picture'];
-        document.getElementById('second-user-name').innerHTML = single_user_data[0]['fields']['full_name'];
-
-        
+        document.getElementById('second-user-name').innerHTML = single_user_data[0]['fields']['full_name'];   
     }
         console.log(rec_msg,'this is user detail');
 
@@ -287,7 +285,7 @@ $('#resend_otp').on('click', function(e){
     function chat_users(id,profile_pic, phone){
 
         let block1 = '<div class="card user-card border-none mb-0 mx-0 pb-0"  style="max-width: 510px; max-height: 72px;"><div class="row g-0"><div class="col-md-2 p-1 mx-0 d-flex align-items-center"><img class="ml-1 user-img  border-3" src="/media/'+profile_pic+'" alt="hello"></div><div class="col-md-10 pt-1">'
-            +'<a class="text-decoration-none" href='+window.location+''+id+'><div class="card-body mt-0 p-2 "><h6 class="user text-dark card-title mt-1 ml-2">'+phone+'</h6>'
+            +'<a class="text-decoration-none" href='+id+'><div class="card-body mt-0 p-2 "><h6 class="user text-dark card-title mt-1 ml-2">'+phone+'</h6>'
                         +'<p class="card-text text-right"><small class="text-muted">7:30 PM</small></p></div></a></div></div></div>';
         return block1
 

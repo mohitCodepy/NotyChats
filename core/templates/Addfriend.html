@@ -3,7 +3,7 @@
 
 <div id="error_msg" class="alert alert-info" role="alert">Search by entering contact number</div>
   
-<form method="POST" id="friendform">
+<form method="POST" id="friendform" action="{% url 'addfriend' %}">
   {% csrf_token %}
   <!-- <h1 class="text-center mb-5 font-weight-bolder p-2">Enter Valid Phone Number Here </h1> -->
   <input id="input_phone"
@@ -12,6 +12,30 @@
   <input id="add_friend" class="btn btn-success mt-5 " type="submit" value="Add">
 </form>
 
+{% if invite %}
+<div class="justify-content-center d-flex">
+  <h5 class="card-title">{{invite}}</h5>
+  </div>
+{% endif %}
+
+{% if friend %}
+<div class="justify-content-center d-flex mt-5">
+  <div class="card mb-3 border-0" style="min-width: 300px; height:78px;">
+    <div class="row g-0 justify-content-left d-flex mb-1 bg-white ">
+      <div class="col-md-4 text-center mt-2">
+        <img src="{{friend.picture.url}}" class="img-fluid" alt="friend's img" width="72px" height="68px" style="border-radius:50%;">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body text-success justify-content-start d-block">
+          <h5 class="card-title text-left">{{friend.phone}}</h5>
+          <p class="card-text text-left">Last Seen 2:47 PM</p>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-outline-success">Connect</button>
+  </div>
+</div>
+{% endif %}
 <!-- <div id="hidden_div" style="display: none;"> -->
 <!-- <form method="POST" id="form2">
     {% csrf_token %}

@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import connection, models
 from users.models import User
 
 # Installed crum to get current user in the model
@@ -27,6 +27,7 @@ class ConnectingPeople(models.Model):
     connected_with = models.ForeignKey(User, related_name='connection_reciever', on_delete = models.CASCADE)
     request_status = models.CharField(max_length = 30, choices = REQUEST_STATUS, default= 'Not_Connected')
     connected_on = models.DateTimeField(auto_now_add = True)
+    group_name = models.CharField(max_length=30, blank=True)
 
 
     def save(self, *args, **kwargs):
@@ -35,6 +36,12 @@ class ConnectingPeople(models.Model):
             user = None
         if not user.pk:
             self.connection_sender = user
+
+# (___________________________________Creating Unique Channel Name_____________________________________________________)
+
+        self.group_name = f'{self.connection_sender__id}_{self.connected_with__id}'
+        print(f'{self.connection_sender__id}_{self.connected_with__id}')
+
         super(ConnectingPeople, self).save(*args, **kwargs)
 
 
