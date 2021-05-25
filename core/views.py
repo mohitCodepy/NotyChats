@@ -1,10 +1,12 @@
-from django.shortcuts import render
+from django.db import connection
+from django.shortcuts import redirect, render
 from django.http import JsonResponse
 from django.utils.translation import templatize
 from django.views.generic import View
 import time
 from django.contrib.auth.mixins import LoginRequiredMixin
 from users.models import User
+from .models import ConnectingPeople
 from channels.layers import get_channel_layer
 from django.core import serializers  
 from asgiref.sync import sync_to_async
@@ -48,14 +50,23 @@ class AddFriend(View):
         friend_phone = request.POST.get('phone')
 
         print('dfdsf')
-        if User.objects.filter(phone = friend_phone).exists():
-            print('got him')
-            friend_obj = User.objects.get(phone = friend_phone)
-            return render(request, template_name = self.template_name, context= {'friend': friend_obj})
+        if not ConnectingPeople.objects.filter(connection_sender__phone = request.user.phone, connected_with__phone = friend_phone).exists():
+            if User.objects.filter(phone = friend_phone).exists():
+                print('got him')
+                friend_obj = User.objects.filter(phone = friend_phone).exclude(phone = request.user.phone)
+                return render(request, template_name = self.template_name, context= {'friend': friend_obj})
+        return render(request, template_name = self.template_name, context= {'invite': 'Already Your Friend'})
         return render(request, template_name = self.template_name, context= {'invite': 'Invite your friend to this awesome platform'})
 
 
-
+class ConnectFriend(View):
+    def post(self, request, *args, **kwargs):
+        friend_id = request.POST.get('friend_id')
+        print(friend_id)
+        # user_obj = User.objects.get(id = friend_id)
+        group_obj =  ConnectingPeople.objects.create(connection_sender_id = request.user.id, connected_with_id = friend_id, request_status = "Pending")
+        group_obj.save()
+        return redirect('/addfriend/')
     
 
 

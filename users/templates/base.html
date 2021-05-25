@@ -235,8 +235,11 @@ $('#resend_otp').on('click', function(e){
 
     socket.onmessage = function(e){
 
-        console.log(e.data);
+        console.log(e.data,'dhfiashdfihasidfipus----------------');
         rec_msg = JSON.parse(e.data);
+        var c_user = rec_msg['c_user'];
+        console.log('current user is ', c_user);
+        console.log(rec_msg,'fff');
         if(rec_msg.single_data!=undefined){
         single_user_data = JSON.parse(rec_msg.single_data);
         single_user_data = single_user_data['single'];
@@ -261,13 +264,14 @@ $('#resend_otp').on('click', function(e){
         // Object.keys(reply).forEach(function(items){
         //     content =+  chat_users(items[0]['picture'], items['db']['phone']);
         // })
-        console.log(reply['db']);
-        rr = JSON.parse(reply['db']);
-        console.log(rr[0]['fields']);
-        for(i in rr){
-            block1 += chat_users(rr[i]['pk'],rr[i]['fields']['picture'], rr[i]['fields']['phone']);
-            console.log(block1,'inside forloop');
-            console.log(rr[i]['pk'], rr[i]['fields']['picture'], rr[i]['fields']['phone']);
+        // console.log(reply['db']);
+        // rr = JSON.parse(reply['db']);
+        // console.log(rr[0]['fields'],'zeroth');
+        for(i in reply){
+            console.log(reply[i], 'looped data');
+            block1 += chat_users(reply[i]['friend_id'],reply[i]['friend_picture'], reply[i]['friend_phone']);
+            // console.log(block1,'inside forloop');
+            // console.log(rr[i]['pk'], rr[i]['fields']['picture'], rr[i]['fields']['phone']);
         }
         document.getElementById('testid').innerHTML = block1;
         
@@ -276,6 +280,15 @@ $('#resend_otp').on('click', function(e){
 
         chat_msgs = rec_msg.message;
         if (chat_msgs!= undefined){
+        let currentuser1 = "{{request.user.id}}";
+        let currentuser2 = ''+c_user;
+        if (currentuser2 != currentuser1){
+            console.log('true');
+            document.getElementsByClassName('send-msg')[0].style.float = "left";
+            console.log('yesssss');
+        }
+
+        console.log(currentuser1, currentuser2);
         sender_chat_msg += sender_chats_fun(chat_msgs);
     }
     document.getElementById('sender-chats').innerHTML += sender_chat_msg ;
@@ -284,7 +297,7 @@ $('#resend_otp').on('click', function(e){
     }
     function chat_users(id,profile_pic, phone){
 
-        let block1 = '<div class="card user-card border-none mb-0 mx-0 pb-0"  style="max-width: 510px; max-height: 72px;"><div class="row g-0"><div class="col-md-2 p-1 mx-0 d-flex align-items-center"><img class="ml-1 user-img  border-3" src="/media/'+profile_pic+'" alt="hello"></div><div class="col-md-10 pt-1">'
+        let block1 = '<div class="card user-card border-none mb-0 mx-0 pb-0"  style="max-width: 510px; max-height: 72px;"><div class="row g-0"><div class="col-md-2 p-1 mx-0 d-flex align-items-center"><img class="ml-1 user-img  border-3" src="'+profile_pic+'" alt="hello"></div><div class="col-md-10 pt-1">'
             +'<a class="text-decoration-none" href='+id+'><div class="card-body mt-0 p-2 "><h6 class="user text-dark card-title mt-1 ml-2">'+phone+'</h6>'
                         +'<p class="card-text text-right"><small class="text-muted">7:30 PM</small></p></div></a></div></div></div>';
         return block1
@@ -293,7 +306,7 @@ $('#resend_otp').on('click', function(e){
 
     function sender_chats_fun(msg){
 
-        let sender_chat_msg = '<div class="col-sm-12 mt-2 bg-none "><div class="card send-msg border-0 rounded text-right"><div class="card-body py-0 msg-box-inner pr-1"><p class="card-text text-left pr-2 pt-1 mb-0">'+msg+'</p>'
+        let sender_chat_msg = '<div class="col-sm-12 mt-2 bg-none "><div class="card send-msg border-0 rounded text-right" ><div class="card-body py-0 msg-box-inner pr-1"><p class="card-text text-left pr-2 pt-1 mb-0">'+msg+'</p>'
             +'<a class="text-secondary text-decoration-none pt-0" style="font-size: small;">14:56 PM</a> </div></div></div>'
     return sender_chat_msg
     };

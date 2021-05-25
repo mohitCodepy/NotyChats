@@ -10,8 +10,8 @@
     <div class="col-sm-4 left-bar border">
         <div class="row g-0">
             <div class="col-md-3 align-items-center justify-content-center mx-0">
-                <img class="img-fluid rounded-circle border border-3 p-1 border-warning mt-1"
-                    src="{% static 'users/images/wlogo.png' %}" alt="hello" height="45px" width="45px">
+                <img class=" rounded-circle p-1 "
+                    src="{{request.user.picture.url}}" alt="hello" height="px" width="60px" >
             </div>
             <div class="col-md-9 text-right justify-content-end align-items-center d-flex mx-0">
                 <a class="text-decoration-none" href="#"><svg width="1em" height="1em" viewBox="0 0 16 16"

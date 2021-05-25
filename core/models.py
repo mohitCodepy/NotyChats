@@ -12,10 +12,9 @@ from crum import get_current_user
 
 REQUEST_STATUS = (
 
-    ('Not_Connected', 'Not_Connected'),
-    ('Sender_Sent', 'Sender_Sent'),
     ('Pending', 'Pending'),
     ('Connected', 'Connected'),
+    ('Blocked', 'Blocked'),
 
 )
 
@@ -32,6 +31,7 @@ class ConnectingPeople(models.Model):
 
     def save(self, *args, **kwargs):
         user = get_current_user()
+        print(user, user.pk)
         if user and not user.pk:
             user = None
         if not user.pk:
@@ -39,10 +39,17 @@ class ConnectingPeople(models.Model):
 
 # (___________________________________Creating Unique Channel Name_____________________________________________________)
 
-        self.group_name = f'{self.connection_sender__id}_{self.connected_with__id}'
-        print(f'{self.connection_sender__id}_{self.connected_with__id}')
+        if int(self.connection_sender_id) < int(self.connected_with_id):
+            self.group_name = f'{self.connection_sender_id}_{self.connected_with_id}'
+        else:
+            self.group_name = f'{self.connected_with_id}_{self.connection_sender_id}'
+        print(f'{self.connection_sender_id}_{self.connected_with_id}')
 
         super(ConnectingPeople, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f'{self.connection_sender} binded with {self.connected_with}'
+
 
 
 MSG_STATUS = (

@@ -18,24 +18,29 @@
   </div>
 {% endif %}
 
-{% if friend %}
+{% for i in friend %}
+<form method="POST" action="{% url 'connectfriend' %}">
+  {% csrf_token %}
 <div class="justify-content-center d-flex mt-5">
   <div class="card mb-3 border-0" style="min-width: 300px; height:78px;">
     <div class="row g-0 justify-content-left d-flex mb-1 bg-white ">
       <div class="col-md-4 text-center mt-2">
-        <img src="{{friend.picture.url}}" class="img-fluid" alt="friend's img" width="72px" height="68px" style="border-radius:50%;">
+        <img src="{{i.picture.url}}"  alt="friend's img" width="72px" height="68px" style="border-radius:50%;">
       </div>
       <div class="col-md-8">
         <div class="card-body text-success justify-content-start d-block">
-          <h5 class="card-title text-left">{{friend.phone}}</h5>
-          <p class="card-text text-left">Last Seen 2:47 PM</p>
+          <h5 class="card-title text-left">{{i.phone}}
+          </h5>
+          <p class="card-text text-left">{{request.user.phone}}</p>
         </div>
       </div>
     </div>
-    <button class="btn btn-outline-success">Connect</button>
+
+    <!-- <input class="btn btn-outline-success" value="Connect"> -->
+    <button class="btn btn-outline-success" type="submit" name="friend_id" value="{{i.id}}">Connect</button>
   </div>
 </div>
-{% endif %}
+{% endfor %}
 <!-- <div id="hidden_div" style="display: none;"> -->
 <!-- <form method="POST" id="form2">
     {% csrf_token %}

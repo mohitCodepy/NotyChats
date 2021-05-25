@@ -32,10 +32,10 @@ class Verification_View(View):
     template_name = 'verification.html'
 
     def get(self, request, *args, **kwargs):
-
         if request.user.is_authenticated:
             return redirect('/home')
-
+        # if request.user.is_authenticated:
+        print(request.user)
         return render(request, template_name = self.template_name)
 
 
@@ -80,6 +80,7 @@ class Verification_View(View):
 
             # messages.warning(request, 'Oops! enter the phone number')
             return JsonResponse({"status":"400", 'msg':'Oops! enter the phone number'})
+        return JsonResponse({"status":"400", 'msg':'Oops! enter the phone number'})
 
 
 # (________________________________________ verifying & authenticating user by phone  ________________________________________)
@@ -140,6 +141,7 @@ class Resend_otp(View):
         try:
             user_obj = get_object_or_404(User, phone = int(phone))
             otp_gen = random.randint(100000,999999)
+            print(otp_gen)
             request.session['otp_gen'] = otp_gen
             user_obj.set_password(str(otp_gen))
             user_obj.save()
