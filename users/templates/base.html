@@ -216,7 +216,7 @@ $('#resend_otp').on('click', function(e){
 
 <script>
 
-    const socket = new WebSocket('ws://'+window.location.host+'{{path}}');
+    const socket = new WebSocket('wss://'+window.location.host+'{{path}}');
     socket.onopen = function(e){
         console.log('connected');
     };
