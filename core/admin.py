@@ -4,4 +4,4 @@ from .models import ConnectingPeople
 
 @admin.register(ConnectingPeople)
 class ConnectingPeopleAdmin(admin.ModelAdmin):
-    list_display = ['id', 'connection_sender', 'connected_with', 'request_status', 'connected_on', 'group_name']
+    list_display = ['id', 'connection_sender', 'connection_receiver', 'request_status', 'connected_on', 'group_name']

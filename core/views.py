@@ -30,8 +30,8 @@ class HomeView(View):
     def get(self, request, *args, **kwargs):
         # if request.user.is_authenticated:
         # user_obj = User.objects.all()
-        print(dir(request))
-        print(kwargs, args, request.get_host())
+        # print(dir(request))
+        # print(kwargs, args, request.get_host())
         return render(request, template_name = 'Notychat.html', context= {'path' : request.get_full_path()})
         # return render(request, 'verification.html')
 
@@ -50,7 +50,7 @@ class AddFriend(View):
         friend_phone = request.POST.get('phone')
 
         print('dfdsf')
-        if not ConnectingPeople.objects.filter(connection_sender__phone = request.user.phone, connected_with__phone = friend_phone).exists():
+        if not ConnectingPeople.objects.filter(connection_sender__phone = request.user.phone, connection_receiver__phone = friend_phone).exists():
             if User.objects.filter(phone = friend_phone).exists():
                 print('got him')
                 friend_obj = User.objects.filter(phone = friend_phone).exclude(phone = request.user.phone)
@@ -64,7 +64,7 @@ class ConnectFriend(View):
         friend_id = request.POST.get('friend_id')
         print(friend_id)
         # user_obj = User.objects.get(id = friend_id)
-        group_obj =  ConnectingPeople.objects.create(connection_sender_id = request.user.id, connected_with_id = friend_id, request_status = "Pending")
+        group_obj =  ConnectingPeople.objects.create(connection_sender_id = request.user.id, connection_receiver_id = friend_id, request_status = "Pending")
         group_obj.save()
         return redirect('/addfriend/')
     

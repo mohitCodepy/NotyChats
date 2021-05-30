@@ -23,7 +23,7 @@ REQUEST_STATUS = (
 
 class ConnectingPeople(models.Model):
     connection_sender = models.ForeignKey(User, related_name='connection_sender', on_delete = models.CASCADE)
-    connected_with = models.ForeignKey(User, related_name='connection_reciever', on_delete = models.CASCADE)
+    connection_receiver = models.ForeignKey(User, related_name='connection_reciever', on_delete = models.CASCADE)
     request_status = models.CharField(max_length = 30, choices = REQUEST_STATUS, default= 'Not_Connected')
     connected_on = models.DateTimeField(auto_now_add = True)
     group_name = models.CharField(max_length=30, blank=True)
@@ -37,18 +37,18 @@ class ConnectingPeople(models.Model):
         if not user.pk:
             self.connection_sender = user
 
-# (___________________________________Creating Unique Channel Name_____________________________________________________)
+# (___________________________________Creating Unique group Name_____________________________________________________)
 
-        if int(self.connection_sender_id) < int(self.connected_with_id):
-            self.group_name = f'{self.connection_sender_id}_{self.connected_with_id}'
+        if int(self.connection_sender_id) < int(self.connection_receiver_id):
+            self.group_name = f'{self.connection_sender_id}_{self.connection_receiver_id}'
         else:
-            self.group_name = f'{self.connected_with_id}_{self.connection_sender_id}'
-        print(f'{self.connection_sender_id}_{self.connected_with_id}')
+            self.group_name = f'{self.connection_receiver_id}_{self.connection_sender_id}'
+        print(f'{self.connection_sender_id}_{self.connection_receiver_id}')
 
         super(ConnectingPeople, self).save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.connection_sender} binded with {self.connected_with}'
+        return f'{self.connection_sender} binded with {self.connection_receiver}'
 
 
 

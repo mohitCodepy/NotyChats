@@ -12,61 +12,163 @@ from django.core import serializers
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
+#       fetching currently logged-in user 
 
-        self.user = self.scope['user']
-        print('\n\n')
-        print(self.scope['url_route']['kwargs']['id'])
-        print('\n\n')
-        self.friend_detail = self.scope['url_route']['kwargs']['id'] 
-        print(self.user.id)
+        self.current_login_user = self.scope['user'] 
+       
+
+#       getting friend's id from url 
+
+        self.friend_id = self.scope['url_route']['kwargs']['id'] 
+
          
-        print(self, self.scope['user'])
         print('connected successfully')
         await self.accept()
 
+
+#       fetching group name created at the time of friend-request sent
+
         self.group_name = await self.get_group_name()
 
-        user_detail_obj = await sync_to_async(User.objects.get)(id = self.friend_detail)
-        user_detail_obj = await sync_to_async(serializers.serialize)('json',[user_detail_obj])
 
+#       Using friend's id fetching his profile information
+
+        friend_details_obj = await sync_to_async(User.objects.get)(id = self.friend_id)
+        serialized_friend_details = await sync_to_async(serializers.serialize)('json',[friend_details_obj])
+
+
+#       Adding their group_name and channel_name
 
         await self.channel_layer.group_add(
             self.group_name,
             self.channel_name
         )
 
-        user_obj =  await self.get_users_connections()
-        user_obj =  json.dumps(user_obj)
+
+#       getting all friends of currently logged-in user and converting to json format
+
+        all_friends_obj =  await self.get_users_connections()
+        all_friends_json =  json.dumps(all_friends_obj)
+
+
+#       Sending current-user ,his friends and his current friend 
+
         await self.channel_layer.group_send(
             self.group_name,
             {   
                 'type' :  'chat_users',            
-                'msg': user_obj,
-                'user_data': user_detail_obj
+                # msg ---> all_friends
+
+                'all_friends': all_friends_json,  
+
+                # single_user_data
+                'current_friend': serialized_friend_details
+
             }
         )
 
-    async def receive(self, text_data):
-        datas = json.loads(text_data)
-        print(datas['msg'])
-        print('sudhfushdufasudfsdnf',self.friend_detail)
-        user_obj =  await sync_to_async(User.objects.all)()
-        user_obj = await sync_to_async(serializers.serialize)('json', user_obj)
-        user_detail_obj = await sync_to_async(User.objects.get)(id = self.user.id)
-        user_detail_obj = await sync_to_async(serializers.serialize)('json',[user_detail_obj])
-        await self.channel_layer.group_send(
-            self.group_name,
-            {   
-                'type' :  'chat_message',            
-                'message': datas['msg'],
-                'current_user': self.friend_detail,
-                'msg':    user_obj,
-                'user_data': user_detail_obj
-            }
-        )
 
+#   calling this function after sending data to group from line :- 59
+
+    async def chat_users(self, event):
+
+        all_friends = event['all_friends']
+
+        current_friend = event.get('current_friend')
+
+        await self.send(text_data=json.dumps({
+            #msg
+            'all_friends': all_friends, 
+
+             # single_user_data
+            'current_friend': json.dumps({'current_friend':current_friend})
+
+        }))
+    
+
+#   getting all friends function
+
+    @database_sync_to_async
+    def get_users_connections(self):
+    
+        # user_data = ConnectingPeople.objects.filter(connected_with__id = self.user.id)
+        # print(user_data)
+        # if user_data:
+        #     print('got the connections of user')
+        #     list_of_dict = [ 
+
+        #         { 'group_id' : i.id, 
+        #         'friend_id' : i.connection_sender.id,
+        #         'friend_phone': i.connection_sender.phone,
+        #         'friend_picture' : i.connection_sender.picture.url
+        #         }
+        #         for i in user_data
+        #     ]
+        # else:
+
+        
+        user_data = ConnectingPeople.objects.filter(connection_sender__id = self.current_login_user.id)
+        list_of_friends = [ 
+
+            { 'group_id' : i.id, 
+            'friend_id' : i.connection_receiver.id,
+            'friend_phone': i.connection_receiver.phone,
+            'friend_picture' : i.connection_receiver.picture.url
+            }
+            for i in user_data
+        ]
+    
+        return list_of_friends
+
+
+#   getting group name
+
+    @database_sync_to_async
+    def get_group_name(self):
+
+        try: 
+            group_name = ConnectingPeople.objects.get(connection_sender__id = self.current_login_user.id, connection_receiver__id = self.friend_id)
+            print(group_name.group_name)
+
+        except Exception as e:
+            print(e)
+            group_name = ConnectingPeople.objects.get(connection_sender__id = self.friend_id, connection_receiver__id = self.current_login_user.id)
+            
+            print(group_name.group_name)
+        group_name = group_name.group_name
+
+        return group_name
+
+    
+#   For disconnecting current user
     async def disconnect(self, event):
         await self.close()
+
+
+
+
+
+
+
+#   Unused functions start -----------------------------------------------------------------------------------
+    async def receive(self, text_data):
+        datas = json.loads(text_data)
+        print(datas['msg'], 'this is reply')
+        # print('sudhfushdufasudfsdnf',self.friend_detail)
+        # user_obj =  await sync_to_async(User.objects.all)()
+        # user_obj = await sync_to_async(serializers.serialize)('json', user_obj)
+        # user_detail_obj = await sync_to_async(User.objects.get)(id = self.user.id)
+        # user_detail_obj = await sync_to_async(serializers.serialize)('json',[user_detail_obj])
+        # await self.channel_layer.group_send(
+        #     self.group_name,
+        #     {   
+        #         'type' :  'chat_message',            
+        #         'message': datas['msg'],
+        #         'current_user': self.friend_detail,
+        #         'msg':    user_obj,
+        #         'user_data': user_detail_obj
+        #     }
+        # )
 
     async def chat_message(self, event):
         message = event.get('message')
@@ -80,75 +182,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'msg': json.dumps({'db' : userss}),
             'single_data': json.dumps({'single':userdetail})
         }))
-        
-    async def chat_users(self, event):
-        message = event['msg']
-        userdetail = event.get('user_data')
-        print(message)
-        await self.send(text_data=json.dumps({
-            'msg': message,
-            'single_data': json.dumps({'single':userdetail})
-        }))
-    
 
-    @database_sync_to_async
-    def get_users_connections(self):
-
-        
-
-        user_data = ConnectingPeople.objects.filter(connected_with__id = self.user.id)
-        print(user_data)
-        if user_data:
-            list_of_dict = [ 
-
-                { 'group_id' : i.id, 
-                'friend_id' : i.connection_sender.id,
-                'friend_phone': i.connection_sender.phone,
-                'friend_picture' : i.connection_sender.picture.url
-                }
-                for i in user_data
-            ]
-        else:
-            user_data = ConnectingPeople.objects.filter(connection_sender__id = self.user.id)
-            list_of_dict = [ 
-
-                { 'group_id' : i.id, 
-                'friend_id' : i.connected_with.id,
-                'friend_phone': i.connected_with.phone,
-                'friend_picture' : i.connected_with.picture.url
-                }
-                for i in user_data
-            ]
-       
-        return list_of_dict
-
-    @database_sync_to_async
-    def get_group_name(self):
-        print(self.user.id, self.friend_detail)
-        try:
-            group_name = ConnectingPeople.objects.get(connection_sender__id = self.user.id, connected_with__id = self.friend_detail)
-        except:
-            group_name = ConnectingPeople.objects.get(connection_sender__id = self.friend_detail, connected_with__id = self.user.id)
-            # group_name = ConnectingPeople.objects.get(connection_sender__id = self.user.id, connected_with__id = self.friend_detail)
-            print(group_name.group_name)
-        group_name = group_name.group_name
-
-
-        return group_name
-
-       
-    
-
-
-
-
-
-
-
-
-
-
-
+#   Unused functions end -----------------------------------------------------------------------------------
 
 
     # async def user_detail(self, event):
