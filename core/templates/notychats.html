@@ -46,12 +46,12 @@
         <div class="col-sm-8">
           <div class="row">
             <div class="col-sm-1 text-right">
-              <img src="/static/images/p2.jpg "  alt="" class="profile-image rounded-circle">
+              <img src="/static/images/p2.jpg " alt="" class="profile-image rounded-circle">
             </div>
             <div class="col-sm-7 mt-1">
               <div class="row">
                 <span class="ml-2  text-left font-weight-bold">Rahul Kumar {{request.user.phone}} </span>
-                <form method="POST" action ="{% url 'userlogout' %}">
+                <form method="POST" action="{% url 'userlogout' %}">
                   {% csrf_token %}
                   <button>Logout</button>
                 </form>
@@ -98,19 +98,27 @@
               <tbody>
                 <tr>
                   <td class="text-left " style="padding-right: 300px;">
-                    <p class="bg-white p-2 mt-2 mr-5 shadow-sm text-dark float-left rounded">Hello Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul </p>
+                    <p class="bg-white p-2 mt-2 mr-5 shadow-sm text-dark float-left rounded">Hello Hello Rahul Hello
+                      Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello
+                      Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello
+                      Rahul Hello Rahul Hello Rahul Hello Rahul </p>
                     <p class="p-1 mt-1 text-left"><small>11:20 PM</small></p>
                   </td>
                 </tr>
                 <tr>
                   <td class="text-left " style="padding-left: 300px;">
-                    <p class=" p-2 shadow text-white rounded ml-5" style="background-color:rgba(189, 226, 135);">Hello Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul </p>
+                    <p class=" p-2 shadow text-white rounded ml-5" style="background-color:rgba(189, 226, 135);">Hello
+                      Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul
+                      Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul
+                      Hello Rahul Hello Rahul Hello Rahul Hello Rahul </p>
                     <p class="p-1 mt-1 text-right"><small>11:21 PM</small></p>
                   </td>
                 </tr>
                 <tr>
                   <td class="text-left " style="padding-left: 300px;">
-                    <p class="p-2 shadow text-white rounded ml-5" style="background-color: rgba(189, 226, 135);"> Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul </p>
+                    <p class="p-2 shadow text-white rounded ml-5" style="background-color: rgba(189, 226, 135);"> Rahul
+                      Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul
+                      Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul Hello Rahul </p>
                     <p class="p-1 mt-1 text-right"><small>11:21 PM</small></p>
                   </td>
                 </tr>
@@ -164,3 +172,57 @@
 </body>
 
 </html>
+
+
+<section class="bookingSection">
+  <div class="container">
+    <div class="row">
+      {% for i in response_list %}
+
+      <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+
+        <div class="innr_booking_box">
+
+          <div class="booking_usr_img">
+            <img src="" class="img-fluid">
+          </div>
+          <div class="booking_usr_txt">
+
+            <ul class="list-inline">
+              <li class="list-inline-item">
+                <h4>Stylist Name</h4>
+              </li>
+              <li class="list-inline-item">
+                <span>ghgy</span>
+              </li>
+            </ul>
+            <ul class="list-inline">
+              <li class="list-inline-item">
+                <h4>Schedule</h4>
+              </li>
+              <li class="list-inline-item">
+                <span>2021-05-31</span>
+              </li>
+            </ul>
+            <ul class="list-inline">
+              <li class="list-inline-item">
+                <h4>Service Charge</h4>
+              </li>
+              <li class="list-inline-item">
+                <span>$</span>
+              </li>
+            </ul>
+            <div class="booking_usr_foot">
+              <span class="satol_rating">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                  class="fas fa-star-half-alt"></i><i class="far fa-star"></i>
+              </span>
+              <button type="button" class="btn booking_btn">Book Now</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>

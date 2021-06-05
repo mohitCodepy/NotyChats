@@ -113,7 +113,7 @@ input:focus{
   /* end */
 
 .send-msg{
-    float: right;
+    /* float: right; */
     background-color: transparent;
     height: auto;
 
@@ -124,7 +124,7 @@ input:focus{
     min-width: 200px;
     height: auto;
     border-radius: 3%;
-    background-color: #DCF8C6;
+    /* background-color: #DCF8C6; */
 }
 .recieved-msg {
     float: left;

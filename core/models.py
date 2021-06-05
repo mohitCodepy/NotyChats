@@ -43,7 +43,7 @@ class ConnectingPeople(models.Model):
             self.group_name = f'{self.connection_sender_id}_{self.connection_receiver_id}'
         else:
             self.group_name = f'{self.connection_receiver_id}_{self.connection_sender_id}'
-        print(f'{self.connection_sender_id}_{self.connection_receiver_id}')
+        print(f'{self.connection_sender_id}_{self.connection_receiver_id}') 
 
         super(ConnectingPeople, self).save(*args, **kwargs)
 
@@ -63,10 +63,11 @@ MSG_STATUS = (
 
 class Message(models.Model):
     group_id = models.ForeignKey(ConnectingPeople, related_name='user_messages', on_delete = models.CASCADE)
+    sender = models.ForeignKey(User, related_name = 'msg_sender', on_delete = models.CASCADE)
     message = models.CharField(max_length = 500)
     msg_date = models.DateTimeField(auto_now_add = True) 
-    multimedia = models.FileField(blank = True)
-    msg_status = models.CharField(max_length = 10, choices = MSG_STATUS)
+    multimedia = models.FileField(blank = True, null= True)
+    msg_status = models.CharField(max_length = 10, choices = MSG_STATUS, default='Sent')
     
     def __str__(self):
-        return self.message
+        return f'{self.message} by {self.sender}'
