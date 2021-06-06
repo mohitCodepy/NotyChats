@@ -32,13 +32,13 @@
             </div>
         </div>
     </div>
-    
+
     <div class="container main-div rounded shadow">
         {% block home %}
         {% endblock home%}
         {% block searchnot %}
         <div class="container main-inner-div align-items-center justify-content-center d-flex my-auto">
-            
+
             <div class="row mb-5 mt-5">
                 <div class="col-sm-12 mb-5 text-center">
                     {% block verify_phone %}
@@ -59,10 +59,10 @@
         crossorigin="anonymous"></script>
 
     <!-- Option 2: Separate Popper and Bootstrap JS -->
-    
+
     <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js" integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" crossorigin="anonymous"></script> -->
-   
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
         integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
         crossorigin="anonymous"></script>
@@ -110,212 +110,225 @@
 });
 </script> -->
 
-<script>
-$('#myform').on('submit',function(e){
-    e.preventDefault();
-    $.ajax({
-        type : "POST",
-        url : "{% url 'verify_phone' %}",
-        data:{
-        phone:$('#input_phone').val(),
-        csrfmiddlewaretoken: '{{csrf_token}}',
-        dataType: "json"
-        },
-        success:function(data, status){
-            console.log(status)
-            console.log(data.msg);
-            console.log(data.status);
-            console.log(typeof(data.status));
-            var output = data.msg;
-            console.log(output);
-            // var status = data.status;
-            if (data.status != "200"){
-                $('#error_msg').text(output);
-                $('#error_msg').addClass('alert-danger');
-            }
-            else{
-                console.log('this 200');
-                $('#error_msg').removeClass('alert-danger');
-                $('#error_msg').addClass('alert-info');
-                $('#error_msg').text(output);
-                $('#myform').hide();
-                $('#hidden_div').removeAttr("style");
-            }
+    <script>
+        $('#myform').on('submit', function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "{% url 'verify_phone' %}",
+                data: {
+                    phone: $('#input_phone').val(),
+                    csrfmiddlewaretoken: '{{csrf_token}}',
+                    dataType: "json"
+                },
+                success: function (data, status) {
+                    console.log(status)
+                    console.log(data.msg);
+                    console.log(data.status);
+                    console.log(typeof (data.status));
+                    var output = data.msg;
+                    console.log(output);
+                    // var status = data.status;
+                    if (data.status != "200") {
+                        $('#error_msg').text(output);
+                        $('#error_msg').addClass('alert-danger');
+                    }
+                    else {
+                        console.log('this 200');
+                        $('#error_msg').removeClass('alert-danger');
+                        $('#error_msg').addClass('alert-info');
+                        $('#error_msg').text(output);
+                        $('#myform').hide();
+                        $('#hidden_div').removeAttr("style");
+                    }
 
+                }
+            });
+
+        });
+
+        $('#resend_otp').on('click', function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'GET',
+                url: "{% url 'resend_otp' %}",
+                success: function (data) {
+                    console.log('hello', data.msg)
+                    if (data.msg) {
+                        $('#error_msg').text(data.msg);
+                        $('#error_msg').addClass('text-success');
+                        $("#resend_otp").hide();
+                        $(function () {
+                            let start = 59;
+                            let end = 0;
+                            let speed = 1000;
+                            setInterval(function () {
+                                if (end < start) {
+                                    start--;
+                                }
+                                if (start < 10) {
+                                    $('#resend_time').html("0:0" + start);
+
+                                }
+                                else {
+                                    $('#resend_time').html("0:" + start);
+                                }
+                                if (start == 0) {
+                                    $("#resend_otp").show();
+                                    $('#resend_time').hide();
+                                }
+                            }, speed);
+                        });
+                    }
+                    else {
+                        $('#resend_msg').hide();
+
+                    }
+                }
+            });
+        });
+    </script>
+    <script>
+        $('#form2').on('submit', function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'verify_otp' %}",
+                data: {
+                    otp: $('#inputotp').val(),
+                    csrfmiddlewaretoken: "{{csrf_token}}",
+                    dataType: "json"
+                },
+                success: function (data) {
+                    if (data.status != "200") {
+                        $('#error_msg').text(data.msg);
+                        $('#error_msg').removeClass('alert-info');
+                        $('#error_msg').addClass('alert-danger');;
+                    }
+                    else {
+                        window.location = '/home';
+                    }
+                }
+            })
+        });
+    </script>
+
+    <script>
+
+        const socket = new WebSocket('ws://' + window.location.host + '{{path}}');
+        socket.onopen = function (e) {
+            console.log('connected');
+            // $("html,#chat-box").animate({ scrollTop:$('#messages').prop("scrollHeight"))}, "slow");
+            // var myDiv = document.getElementsByClassName("chat-box");
+            // window.scrollTo(myDiv.innerHeight, 0);
+            // $('.chat-box').scrollTop();
+            $("#chat-box-id").animate({ scrollTop: $('#chat-box-id')[0].scrollHeight+ "100vh"}, "fast");
+        };
+
+
+        document.getElementById('send-msg').onkeyup = function (e) {
+            e.preventDefault();
+            if (e.keyCode === 13) {  // enter, return
+                msg = document.getElementById('send-msg').value;
+                console.log(msg);
+                document.getElementById('send-msg').value = '';
+                socket.send(JSON.stringify({ 'msg': msg, 's_id': "{{request.user.id}}" }));
+                $("#chat-box-id").animate({ scrollTop: $('#chat-box-id')[0].scrollHeight+ "100vh" }, "fast");
+
+            }
         }
-    });
 
-});
+        socket.onmessage = function (e) {
+            // $('.chat-box').scrollTop();
+            // $("#chat-box-id").animate({ scrollTop: "-70.5vh" }, "fast");
+            $("#chat-box-id").animate({ scrollTop: $('#chat-box-id')[0].scrollHeight+ "100vh"  }, "fast");
 
-$('#resend_otp').on('click', function(e){
-    e.preventDefault();
-    $.ajax({
-        type : 'GET',
-        url : "{% url 'resend_otp' %}",
-        success:function(data){
-            console.log('hello',data.msg)
-            if (data.msg){
-                $('#error_msg').text(data.msg);
-                $('#error_msg').addClass('text-success');
-                $("#resend_otp").hide();
-                $(function(){
-                    let start = 59;
-                    let end = 0;
-                    let speed = 1000;
-                    setInterval(function(){
-                        if (end<start){
-                            start--;
-                        }
-                        if (start<10)
-                        {
-                            $('#resend_time').html("0:0"+start);
+            //      parsing all the data received from backend
 
-                        }
-                        else{
-                            $('#resend_time').html("0:"+start);
-                        }
-                        if (start ==0){
-                            $("#resend_otp").show();
-                            $('#resend_time').hide();
-                        }
-                    }, speed);
-                });
+            all_friends_and_current_friend = JSON.parse(e.data);
+            console.log(all_friends_and_current_friend, 'fff');
+
+            //      if it contains data of current friend
+            if (all_friends_and_current_friend.current_friend != undefined) {
+                single_user_data = JSON.parse(all_friends_and_current_friend.current_friend);
+                single_user_data = single_user_data['current_friend'];
+                single_user_data = JSON.parse(single_user_data);
+
+                document.getElementById('second-user-img').src = '/media/' + single_user_data[0]['fields']['picture'];
+                document.getElementById('second-user-name').innerHTML = single_user_data[0]['fields']['full_name'];
             }
-            else{
-                $('#resend_msg').hide();
-                
-            }
-        }
-    });
-});
-</script>
-<script>
-    $('#form2').on('submit', function(e){
-        e.preventDefault();
-        $.ajax({
-            type: 'POST',
-            url : "{% url 'verify_otp' %}",
-            data:{
-                otp: $('#inputotp').val(),
-                csrfmiddlewaretoken : "{{csrf_token}}",
-                dataType : "json"
-            },
-            success:function(data){
-                if(data.status != "200"){
-                    $('#error_msg').text(data.msg);
-                    $('#error_msg').removeClass('alert-info');
-                    $('#error_msg').addClass('alert-danger');;
-            }
-            else{
-                window.location = '/home';
-            }
-            }
-        })
-    });
-</script>
+            // console.log()
 
-<script>
+            //      fetching all his friends
 
-    const socket = new WebSocket('ws://'+window.location.host+'{{path}}');
-    socket.onopen = function(e){
-        console.log('connected');
-    };
-    
+            all_friends = all_friends_and_current_friend.all_friends;
+            JSON.parse(all_friends);
+            all_friends = JSON.parse(all_friends);
 
-    document.getElementById('send-msg').onkeyup = function(e){
-        e.preventDefault();
-        if (e.keyCode === 13) {  // enter, return
-            msg = document.getElementById('send-msg').value;
-            console.log(msg);
-            document.getElementById('send-msg').value = '';
-            socket.send(JSON.stringify({'msg': msg, 's_id': "{{request.user.id}}"}));
+            block1 = " ";
+
+            //  looping all friends here
+            for (i in all_friends) {
+
+                block1 += chat_friends(all_friends[i]['friend_id'], all_friends[i]['friend_picture'], all_friends[i]['friend_phone']);
+
+            }
+            document.getElementById('testid').innerHTML = block1;
+
+            function chat_friends(id, profile_pic, phone) {
+
+                let block1 = '<div class="card user-card border-none mb-0 mx-0 pb-0"  style="max-width: 510px; max-height: 72px;"><div class="row g-0"><div class="col-md-2 p-1 mx-0 d-flex align-items-center"><img class="ml-1 user-img  border-3" src="' + profile_pic + '" alt="hello"></div><div class="col-md-10 pt-1">'
+                    + '<a class="text-decoration-none" href=' + id + '><div class="card-body mt-0 p-2 "><h6 class="user text-dark card-title mt-1 ml-2">' + phone + '</h6>'
+                    + '<p class="card-text text-right"><small class="text-muted">7:30 PM</small></p></div></a></div></div></div>';
+                return block1
+            };
+
+
+            //     show chat messages...........................................................................
+
+
             
+
+            chat_msgs = JSON.parse(all_friends_and_current_friend.message);
+
+            console.log(chat_msgs);
+            let currentuser1 = "{{request.user.id}}";
+            if (chat_msgs != undefined) {
+                sender_chat_msg = " ";
+                document.getElementById('sender-chats').innerHTML = "";
+                for(i in chat_msgs) {
+                    // console.log(chat_msgs[i]);
+                    // console.log(chat_msgs[i]['fields']['sender'], 'id =', currentuser1);
+                    var position = "right";
+                    var msg_color = "#DCF8C6";
+                    if (currentuser1 == chat_msgs[i]['fields']['sender']) {
+                        // console.log('true');
+                        // document.getElementsByClassName('send-msg')[0].style.float = "left";
+                        position = "right";
+                        msg_color = "#DCF8C6";
+                        // console.log('yesssss');
+                    }
+                    else {
+                        position = "left";
+                        msg_color = "white";
+                        // console.log('Nooooooooooooooooo');
+                    }
+
+                    // console.log(currentuser1, currentuser2);
+                    sender_chat_msg += sender_chats_fun(chat_msgs[i]['fields']['message'], position, msg_color, chat_msgs[i]['fields']['msg_date']);
+                }
+                document.getElementById('sender-chats').innerHTML += sender_chat_msg;
             }
-    }
 
-    socket.onmessage = function(e){
-
-//      parsing all the data received from backend
-
-        all_friends_and_current_friend = JSON.parse(e.data);
-        console.log(all_friends_and_current_friend,'fff');
-
-//      if it contains data of current friend
-        if(all_friends_and_current_friend.current_friend!=undefined){
-            single_user_data = JSON.parse(all_friends_and_current_friend.current_friend);
-            single_user_data = single_user_data['current_friend'];
-            single_user_data = JSON.parse(single_user_data);
-           
-            document.getElementById('second-user-img').src = '/media/'+single_user_data[0]['fields']['picture'];
-            document.getElementById('second-user-name').innerHTML = single_user_data[0]['fields']['full_name'];   
-    }
-// console.log()
-
-//      fetching all his friends
-
-        all_friends= all_friends_and_current_friend.all_friends;
-        JSON.parse(all_friends);
-        all_friends =  JSON.parse(all_friends);
-        
-        block1 = " ";
-
-    //  looping all friends here
-        for(i in all_friends){
-
-            block1 += chat_friends(all_friends[i]['friend_id'],all_friends[i]['friend_picture'], all_friends[i]['friend_phone']);
-            
-        }
-        document.getElementById('testid').innerHTML = block1;
-        
-        function chat_friends(id,profile_pic, phone){
-
-            let block1 = '<div class="card user-card border-none mb-0 mx-0 pb-0"  style="max-width: 510px; max-height: 72px;"><div class="row g-0"><div class="col-md-2 p-1 mx-0 d-flex align-items-center"><img class="ml-1 user-img  border-3" src="'+profile_pic+'" alt="hello"></div><div class="col-md-10 pt-1">'
-                +'<a class="text-decoration-none" href='+id+'><div class="card-body mt-0 p-2 "><h6 class="user text-dark card-title mt-1 ml-2">'+phone+'</h6>'
-                            +'<p class="card-text text-right"><small class="text-muted">7:30 PM</small></p></div></a></div></div></div>';
-            return block1
-};
-
-
-//     show chat messages...........................................................................
-    
-    
-        sender_chat_msg = " ";
-
-        chat_msgs = all_friends_and_current_friend.message;
-        if (chat_msgs!= undefined){
-
-        let currentuser1 = "{{request.user.id}}";
-        console.log(all_friends_and_current_friend.id, 'id =', currentuser1);
-        // let currentuser2 = ''+c_user;
-        var position = "right";
-        var msg_color = "#DCF8C6";
-        if (currentuser1 == all_friends_and_current_friend.id){
-            console.log('true');
-            // document.getElementsByClassName('send-msg')[0].style.float = "left";
-            position = "right";
-            msg_color = "#DCF8C6";
-            console.log('yesssss');
-        }
-        else{
-            position = "left";
-            msg_color = "white";
-            console.log('Nooooooooooooooooo');
         }
 
-        // console.log(currentuser1, currentuser2);
-        sender_chat_msg += sender_chats_fun(chat_msgs, position, msg_color);
-    }
-    document.getElementById('sender-chats').innerHTML += sender_chat_msg ;
-        
-    }
-    
-    function sender_chats_fun(msg, position, msg_color){
+        function sender_chats_fun(msg, position, msg_color, time_stamp) {
 
-        let sender_chat_msg = '<div class="col-sm-12 mt-2 bg-none "><div class="card send-msg border-0 rounded text-right" style ="float: '+position+';" ><div class="card-body py-0 msg-box-inner pr-1" style =" background-color:'+ msg_color +';"><p class="card-text text-left pr-2 pt-1 mb-0">'+msg+'</p>'
-            +'<a class="text-secondary text-decoration-none pt-0" style="font-size: small;">14:56 PM</a> </div></div></div>'
-    return sender_chat_msg
-    };
-</script>
+            let sender_chat_msg = '<div class="col-sm-12 mt-2 bg-none "><div class="card send-msg border-0 rounded text-right" style ="float: ' + position + ';" ><div class="card-body py-0 msg-box-inner pr-1" style =" background-color:' + msg_color + ';"><p class="card-text text-left pr-2 pt-1 mb-0">' + msg + '</p>'
+                + '<a class="text-secondary text-decoration-none pt-0" style="font-size: small;">'+time_stamp+'</a> </div></div></div>'
+            return sender_chat_msg
+        };
+    </script>
 
 </body>
 

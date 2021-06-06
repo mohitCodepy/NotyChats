@@ -20,7 +20,7 @@ from django.conf import settings
 from django.contrib.staticfiles.urls import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('mohitwhatsadmin100/', admin.site.urls),
     path('',include('core.urls')),
     path('auth/',include('users.urls')),
 ]
