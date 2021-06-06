@@ -121,7 +121,7 @@ CHANNEL_LAYERS = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Asia/kolkata'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
