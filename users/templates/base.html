@@ -218,7 +218,7 @@
 
     <script>
 
-        const socket = new WebSocket('ws://' + window.location.host + '{{path}}');
+        const socket = new WebSocket('wss://' + window.location.host + '{{path}}');
         socket.onopen = function (e) {
             console.log('connected');
             // $("html,#chat-box").animate({ scrollTop:$('#messages').prop("scrollHeight"))}, "slow");
