@@ -27,6 +27,10 @@ def send_otp(mobile, otp):
 
 # (________________________________________ registering and sending otp to phone no. ________________________________________)
 
+
+
+
+
 class Verification_View(View):
 
     template_name = 'verification.html'

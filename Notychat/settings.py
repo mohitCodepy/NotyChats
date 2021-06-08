@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "Your Secret Key Here"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -140,4 +140,4 @@ STATIC_ROOT = os.path.join(BASE_DIR / 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-AUTH_KEY = 'Your msg91 key here'
+AUTH_KEY = os.environ['MSG_KEY']

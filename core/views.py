@@ -6,13 +6,14 @@ from django.views.generic import View
 import time
 from django.contrib.auth.mixins import LoginRequiredMixin
 from users.models import User
-from .models import ConnectingPeople
+from .models import ConnectingPeople, Message
 from channels.layers import get_channel_layer
 from django.core import serializers  
 from asgiref.sync import sync_to_async
 import json
 from django.utils.decorators import classonlymethod
 import asyncio
+from django.contrib import messages
 channel_layer = get_channel_layer()
 
 
@@ -23,17 +24,50 @@ channel_layer = get_channel_layer()
 #         return render(request, 'verification.html')
 # LoginRequiredMixin
 
+
+class BasePoint(View):
+    def get(self, request, *args, **kwargs):
+        return redirect('/home/')
+
+
+
 #(_____________________________________________________Home / Chat Room_____________________________________________________)
 
 class HomeView(View):
    
     def get(self, request, *args, **kwargs):
-        # if request.user.is_authenticated:
-        # user_obj = User.objects.all()
-        # print(dir(request))
-        # print(kwargs, args, request.get_host())
-        return render(request, template_name = 'Notychat.html', context= {'path' : request.get_full_path()})
-        # return render(request, 'verification.html')
+        if request.user.is_authenticated:
+            
+            print(kwargs)
+            
+
+            kwargs = kwargs.get('id', None)
+            print(kwargs)
+            if kwargs == None:
+                # messages.success(request,)
+                if ConnectingPeople.objects.filter(connection_sender = request.user.id).exists():
+                    recent_friend = ConnectingPeople.objects.filter(connection_sender = request.user.id).last()
+                    kwargs = recent_friend.connection_receiver.id
+                    return redirect('/home/'f'{kwargs}')
+                # return render(request, template_name = 'Notychat.html', context= {'path' : request.get_full_path()})
+                elif ConnectingPeople.objects.filter(connection_receiver = request.user.id).exists():
+                    recent_friend = ConnectingPeople.objects.filter(connection_receiver = request.user.id).last()
+                    kwargs = recent_friend.connection_sender.id
+                    return redirect('/home/'f'{kwargs}')
+                else:
+                    return render(request, 'Addfriend.html',  {'warn-msg': 'Please add you friend to chat with him'})
+            else:
+
+                try:
+                    kwargs = int(kwargs) 
+                except:
+                    return render(request, template_name = '404.html')
+                if User.objects.filter(id = kwargs).exists() and (ConnectingPeople.objects.filter(connection_sender_id = request.user.id, connection_receiver_id = kwargs) or ConnectingPeople.objects.filter(connection_receiver_id = request.user.id, connection_sender_id = kwargs)):
+                    print('got the id', kwargs)
+                    return render(request, template_name = 'Notychat.html', context= {'path' : request.get_full_path()})
+                else:
+                    return render(request, template_name = '404.html')
+        return render(request, 'verification.html')
 
 
 #(_____________________________________________________Add Friend View_____________________________________________________)
@@ -42,8 +76,10 @@ class HomeView(View):
 class AddFriend(View):
     template_name = 'Addfriend.html'
     def get(self, request, *args, **kwargs):
-
-        return render(request, template_name = self.template_name)
+        if request.user.is_authenticated:
+            return render(request, template_name = self.template_name)
+        else:
+            return render(request, 'verification.html')
 
     def post(self, request, *args, **kwargs):
 

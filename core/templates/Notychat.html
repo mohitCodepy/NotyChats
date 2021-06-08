@@ -39,7 +39,10 @@
                         <li><a class="dropdown-item" href="#">Archived</a></li>
                         <li><a class="dropdown-item" href="#">Starred</a></li>
                         <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><a class="dropdown-item" href="#">Log out</a></li>
+                        <form action="{% url 'userlogout' %}" method="post">
+                            {% csrf_token %}
+                        <li><a class="dropdown-item bg-white"><input value="Log out" class="bg-white" type="submit"></a></li>
+                    </form>
                     </ul>
                 </div>
 

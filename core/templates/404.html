@@ -1,0 +1,10 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block not_found %}
+
+<div class="row">
+    <div class="col-sm-12 d-flex justify-content-center justify-content-center mt-5">
+        <img src="{% static 'core/images/error-img.gif' %}" class="img-fluid" height="auto" >
+    </div>
+</div>
+{% endblock not_found%}
