@@ -19,6 +19,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         self.current_login_user = self.scope['user'] 
        
 
+
 #       getting friend's id from url 
 
         self.friend_id = self.scope['url_route']['kwargs']['id'] 
@@ -252,8 +253,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
     def get_group_msgs(self, grp_name):
         connection_obj =  ConnectingPeople.objects.get(group_name = grp_name)
         msg_queryset =  Message.objects.filter(group_id__connection_sender = connection_obj.connection_sender, group_id__connection_receiver =  connection_obj.connection_receiver).order_by('msg_date')
-        # for i in msg:
-        #     print(i)
+        for i in msg_queryset:
+            print(i.msg_date.time())
         return msg_queryset
 
 

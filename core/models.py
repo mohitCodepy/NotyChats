@@ -1,6 +1,7 @@
 from django.db import connection, models
 from users.models import User
-
+from django.utils import timezone
+import datetime
 # Installed crum to get current user in the model
 
 from crum import get_current_user 
@@ -65,7 +66,7 @@ class Message(models.Model):
     group_id = models.ForeignKey(ConnectingPeople, related_name='user_messages', on_delete = models.CASCADE)
     sender = models.ForeignKey(User, related_name = 'msg_sender', on_delete = models.CASCADE)
     message = models.CharField(max_length = 500)
-    msg_date = models.DateTimeField(auto_now_add = True) 
+    msg_date = models.DateTimeField(auto_now_add= True) 
     multimedia = models.FileField(blank = True, null= True)
     msg_status = models.CharField(max_length = 10, choices = MSG_STATUS, default='Sent')
     

@@ -7,6 +7,7 @@ class User(AbstractUser):
     phone = models.IntegerField(unique=True, blank= False )
     full_name = models.CharField(max_length=20, blank=False )
     username= models.CharField(unique = False, max_length=10, blank = True, null = True)
+    bio = models.TextField(null= True, blank= True, max_length= 600)
     USERNAME_FIELD ='phone'
     REQUIRED_FIELDS = ['full_name']
     objects = CustomUserManager()

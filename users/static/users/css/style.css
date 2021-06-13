@@ -162,9 +162,13 @@ input:focus{
     border: none;
 }
 .user-img{
+    margin-top: 2px;
+
     border-radius: 50%;
-    width: 55px;
-    height: 55px;
+    min-width: 56px;
+    max-width: 56px;
+    min-height: 55px;
+    max-height: 55px;
 }
 
 .three-dot{
@@ -184,3 +188,15 @@ input:focus{
     background-color: turquoise;
 
 } */
+
+/* For modifying input button on edit profile */
+
+input[type="file"] {
+    display: none;
+}
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}

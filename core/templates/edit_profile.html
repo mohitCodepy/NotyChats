@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block verify_phone %}
+{% endblock verify_phone%}
+{% block searchnot %}
+{% endblock searchnot %}
+{% block editprofile %}
+<!-- picture
+    phone = models.IntegerField(unique=True, blank= False )
+full_name
+username -->
+<form action="{% url 'edit_profile' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+        {% if user_profile %}
+        <div class="col-sm-4 d-flex align-items-center justify-content-center">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <img id="output" src="{{user_profile.picture.url}}" class="img-thumbnail rounded-circle" style="max-width: 75%; min-width: 75%; max-height: 255px;min-height: 255px;" alt="">
+                </div>
+                <div class="col-sm-12 text-center mt-5">
+                    <label class="custom-file-upload">
+                        <input type="file" id="image-file" accept="image/*" name="picture" onchange="loadFile(event)" />
+                        <i class="fa fa-cloud-upload"></i> Custom Upload
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+
+            <div class="row g-1 d-flex justify-content-center align-items-center py-5">
+                <div class="col-sm-12 py-3">
+                    <label for="inputname" class="form-label mb-2">Full Name :</label>
+                    <input id="inputname" type="text" class="form-control" name="full_name"
+                        value="{{user_profile.full_name}}" required aria-label="Username">
+                </div>
+                <div class="col-sm-12 py-3">
+                    <label for="inputphone" class="form-label mb-2">Phone Number :</label>
+                    <input id="inputphone" type="tel" class="form-control" title="phone number cannot be changed"
+                        value="{{user_profile.phone}}" required readonly aria-label="Phone Number">
+                </div>
+                <div class="col-sm-12 py-3">
+                    <label for="inputbio" class="form-label mb-2">Bio : </label>
+                    <input id="inputbio" type="text" class="form-control" name="bio" placeholder="Add Bio"
+                        value="{%if user_profile.bio == None%}Please add your bio{%else%}{{user_profile.bio}}{%endif%}"
+                        aria-label="Bio">
+                </div>
+            </div>
+            <input type="submit" class="btn btn-warning" value="Update">
+</form>
+</div>
+
+</div>
+{% endif %}
+{% endblock editprofile %}

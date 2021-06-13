@@ -5,6 +5,7 @@
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap CSS -->
@@ -15,19 +16,20 @@
 
     <title>Whatsapp Web</title>
     <link rel="stylesheet" href="{% static '/users/css/style.css' %}">
+    <link rel="shortcut icon" href="{% static '/users/images/wpfavicon.ico' %}" type="image/x-icon">
 </head>
 
 <body>
 
     <div class="navbar bg-success nav-div container-fluid mt-0 ">
         <div class="navbar-brand nav-inner-div ml-5 bg-success mt-2 align-items-center">
-            <div class=" row bg-success" style="margin-left:150px;">
+            <div class="row bg-success" style="margin-left:150px;">
                 <div class="col-sm-6 bg-success mr-0 text-right">
                     <i
                         class="fab bg-success text-white text-right mt-5 mr-0 fa-whatsapp fa-2x d-inline text-center "></i>
                 </div>
                 <div class="col-sm-6 p-0  bg-success mt-1 ml-0 text-left">
-                    <h5 class="text-white text-left ml-0 d-inline bg-success">Whatsapp Web</h5>
+                    <a href="/home/" class="text-decoration-none" ><h5 class="text-white text-left ml-0 d-inline bg-success">Whatsapp Web</h5></a>
                 </div>
             </div>
         </div>
@@ -36,6 +38,8 @@
     <div class="container main-div rounded shadow">
         {% block home %}
         {% endblock home%}
+        {% block editprofile %}
+        {% endblock editprofile %}
         {% block searchnot %}
         <div class="container main-inner-div align-items-center justify-content-center d-flex my-auto">
 
@@ -69,7 +73,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
         integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
         crossorigin="anonymous"></script>
-
+        
     <!-- <script> -->
     <!-- // console.log('hello');
     // document.getElementById('resend').onclick = function(event){
@@ -235,8 +239,11 @@
                 msg = document.getElementById('send-msg').value;
                 console.log(msg);
                 document.getElementById('send-msg').value = '';
-                socket.send(JSON.stringify({ 'msg': msg, 's_id': "{{request.user.id}}" }));
+                if(msg.trim()!=""){
+                    socket.send(JSON.stringify({ 'msg': msg, 's_id': "{{request.user.id}}" }));
+                }
                 $("#chat-box-id").animate({ scrollTop: $('#chat-box-id')[0].scrollHeight+ "100vh" }, "fast");
+            
 
             }
         }
@@ -326,13 +333,36 @@
         }
 
         function sender_chats_fun(msg, position, msg_color, time_stamp) {
-
+            // time_stamp = time_stamp.slice(11,16)
+            var today = new Date(time_stamp);
+            var time =  new Date(today);
+            var fintime = new Date(time);
             let sender_chat_msg = '<div class="col-sm-12 mt-2 bg-none "><div class="card send-msg border-0 rounded text-right" style ="float: ' + position + ';" ><div class="card-body py-0 msg-box-inner pr-1" style =" background-color:' + msg_color + ';"><p class="card-text text-left pr-2 pt-1 mb-0">' + msg + '</p>'
-                + '<a class="text-secondary text-decoration-none pt-0" style="font-size: small;">'+time_stamp+'</a> </div></div></div>'
+                + '<a class="text-secondary text-decoration-none pt-0" style="font-size: small;">'+fintime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) +' </a> </div></div></div>'
             return sender_chat_msg
         };
     </script>
+    <!-- for uploading profile image of limited size -->
+<script>
+    $('#image-file').on('change', function() {
+        var numb = $(this)[0].files[0].size / 1024 / 1024;
+        numb = numb.toFixed(2);
+        if (numb > 2) {
+          alert('to big, maximum is 2MiB. You file size is: ' + numb + ' MiB');
+        }
+      });
+      
+    </script>
 
+<script>
+    var loadFile = function(event) {
+      var output = document.getElementById('output');
+      output.src = URL.createObjectURL(event.target.files[0]);
+      output.onload = function() {
+        URL.revokeObjectURL(output.src) // free memory
+      }
+    };
+  </script>    
 </body>
 
 </html>

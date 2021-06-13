@@ -1,5 +1,5 @@
 from django.db import connection
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.http import JsonResponse
 from django.utils.translation import templatize
 from django.views.generic import View
@@ -91,8 +91,10 @@ class AddFriend(View):
                 print('got him')
                 friend_obj = User.objects.filter(phone = friend_phone).exclude(phone = request.user.phone)
                 return render(request, template_name = self.template_name, context= {'friend': friend_obj})
+            else:
+                return render(request, template_name = self.template_name, context= {'invite': f'Invite your friend to this awesome platform {request.get_full_path()}'})
         return render(request, template_name = self.template_name, context= {'invite': 'Already Your Friend'})
-        return render(request, template_name = self.template_name, context= {'invite': 'Invite your friend to this awesome platform'})
+        
 
 
 class ConnectFriend(View):
@@ -102,16 +104,36 @@ class ConnectFriend(View):
         # user_obj = User.objects.get(id = friend_id)
         group_obj =  ConnectingPeople.objects.create(connection_sender_id = request.user.id, connection_receiver_id = friend_id, request_status = "Pending")
         group_obj.save()
-        return redirect('/addfriend/')
+        return redirect('/home/')
     
 
 
 
+class EditProfileView(View):
+    template_name = 'edit_profile.html'
+    def get(self, request, *args, **kwargs):
+        user_id = kwargs.get('user_id')
+        print(user_id)
+        if user_id!= None:
+            user_profile = User.objects.get(id = user_id)
+            return render(request, template_name= self.template_name, context= {'user_profile': user_profile})
+        return render(request, template_name= '404.html',)
+    
+    def post(self, request, *args, **kwargs):
+        fullname = request.POST.get('full_name')
+        picture = request.FILES.get('picture')
+        bio = request.POST.get('bio',' ')
 
+        user_obj =  get_object_or_404(User, id = request.user.id)
 
-
-
-
+        if picture!=None:
+            user_obj.picture = picture
+            user_obj.save()
+        if fullname!= None and bio!=None:
+            user_obj.full_name = fullname
+            user_obj.bio = bio
+            user_obj.save()
+        return redirect(f'/edit_profile/{request.user.id}')
 
 
 # class HomeView(View):
