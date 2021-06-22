@@ -39,7 +39,7 @@ To run this project, you will need to add the following  variables to your setti
 
 **Back-end:** Python, Django, Django-Channels
 
-**Front-end:** HTML, CSS, BootStrap, Ajax
+**Front-end:** HTML, CSS, BootStrap, JavaScript, Ajax
 
   
 ## Run Locally
