@@ -17,7 +17,7 @@ Install Notychats project with pip
 To run this project, you will need to add the following  variables to your settings.py
 
 ```bash 
-`SECRET_KEY`  = 'Your project's secret key'
+`SECRET_KEY`  = "Your project's secret key"
 
 `API_KEY` = os.config['MSG91_Key']
     or 
