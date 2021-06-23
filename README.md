@@ -9,7 +9,7 @@ Notychats is a clone of whatsapp having feature to chat between users.
 Install Notychats project with pip
 
 ```bash 
-  pip install requirements.txt
+  pip install -r requirements.txt
 ```
     
 ## Environment Variables
@@ -62,7 +62,7 @@ Install dependencies
   pip install -r requirements.txt 
 ```
 
-In base.html of users users/base.html in side websockets
+In base.html of users users/base.html in websockets
 
 ```bash
   change wss:/ to ws: 
